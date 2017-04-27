@@ -230,31 +230,6 @@ this.listAllTurns = function(board, deck, player = this.player, oponent = this.o
   return(turns)
 }
 
-
-//saved version
-// // What a mess ):
-// this.createStrategyTree = function(board, deck, player = this.player, oponent = this.oponent, node = new Node(null), depth = 1, currDepth = 0, startNode = new Node(null), turns){
-//   //Create and return a Tree out of nodes
-//   if(depth == currDepth){
-//       return node
-//   }
-//
-//   if (turns === undefined){
-//     node = startNode
-//     var turns = this.listAllTurns(board, deck, this.player, this.oponent)
-//   }
-//   for (var i = 0; i < turns.length; i++) {
-//     //for all the turns call listAllTurns with the new node and an inversion of player and oponent
-//     var turns = this.listAllTurns(board, deck, this.player, this.oponent)
-//     // console.log(turns[i])
-//     //Play turn by player so the board and deck change.
-//     //this.player.playTurn(turns[i], board, deck)
-//     newNode = node.addChild(turns[i])
-//     this.createStrategyTree(board.copy(), deck.copy(), oponent.copy(), player.copy(), newNode, depth, currDepth+1, startNode, turns+1)
-//   }
-//   return startNode
-// }
-
 this.createStrategyTree = function(board, deck, player = this.player, oponent = this.oponent, node = new Node(null), depth = 10, currDepth = 0, startNode = new Node(null), turns){
   //Create and return a Tree out of nodes
   if(depth == currDepth){

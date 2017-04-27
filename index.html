@@ -128,6 +128,14 @@ FIXME load scripts async, but I'll have to wait for all, before the main is able
             callback()
         }
         
+        function createThemeSelector(dB){
+            options = ""
+            for (var key in colorSchemeDict){
+                options += "<option value=\""+key+"\">"+key+"</option>"
+            }
+            dB.innerHTML +=  "<br>Colors:<select id=\"colorSelection\" oninput=\"window.location.hash = 'c='+this.value; window.location.reload();\">"+options+"</select>"
+        }
+        
         dialogBoxActive = true
         var dB = document.createElement("div")
         dB.setAttribute("id","dialogBox")
@@ -136,16 +144,22 @@ FIXME load scripts async, but I'll have to wait for all, before the main is able
         //dB.innerHTML = "~~ Ai or not? ~ ~"
         dB.innerHTML = "<br><button id=\"againstAi\"    style = \"background-color:"+inactivePlayer.color2+";color:"+inactivePlayer.color +";\">Against Ai</button>"
         dB.innerHTML += "<br><button id=\"playersOnly\" style = \"background-color:"+activePlayer.color2  +";color:"+activePlayer.color   +";\">2 Player</button>"
+        createThemeSelector(dB)
         document.body.appendChild(dB)
         
         var pve = document.getElementById("againstAi")
         var pvp = document.getElementById("playersOnly")
+        var cols = document.getElementById("colorSelection")
         pve.onclick = function(){setAi(true)}
         pvp.onclick = function(){setAi(false)}
         
         var style = "width: 40%;"
         pve.setAttribute("style", pve.getAttribute("style")+style)
         pvp.setAttribute("style", pvp.getAttribute("style")+style)
+        cols.setAttribute("style", pve.getAttribute("style")+style)
+        
+        document.getElementById("colorSelection").value = window.location.hash.split("=")[1]
+        
     }
     
     function fillInBackground(ctx,backgroundColor){
