@@ -1,11 +1,11 @@
 //colourscheme
 function BWScheme(){ 
-    this.player1color1     =    'rgba(0, 0, 0, 0.8)'
-    this.player1color2     =    'rgba(255, 255, 255, 0.8)'
-    this.player2color1     =    'rgba(255, 255, 255, 0.8)'
-    this.player2color2     =    'rgba(0, 0, 0, 0.8)'
+    this.player1color1     =    'rgba(0, 0, 0, 1)'
+    this.player1color2     =    'rgba(255, 255, 255, 1)'
+    this.player2color1     =    'rgba(255, 255, 255, 1)'
+    this.player2color2     =    'rgba(0, 0, 0, 1)'
     this.neutralColor      =    'rgba(122, 122, 122, 1)'
-    this.backgroundImage   =    ""
+    this.backgroundImage   =    "mandalaSpaceyBlur.jpg"
     this.backgroundColor   =    'rgba(0,0,0,0.0)'
     this.fieldColor        =    'rgba(60, 60, 60,0.5)'
     this.fieldBorderColor  =    'rgb(20,20,20)'
@@ -44,7 +44,7 @@ colorSchemeDict = {
 
 "default":new DefaultScheme(),
 "dark":new DarkColorScheme(),
-"B&W":new BWScheme()
+"BW":new BWScheme()
 
 }
 

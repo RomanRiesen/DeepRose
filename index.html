@@ -221,14 +221,18 @@ DISCLAIMER:
     function setup () {}
 
     //FIXME should have a GAME object, that just basically has a reference to everything. Makes it also much easier to store and reload stuff.
-    var boardSize = 11//9
+    var boardSize = 9//9 or 11 works good.
     var border = 6
 
     var dialogBoxActive = false//FIXME TODO god beware, it's a global! and it should probably be solved differently
     window.againstAi = true
 
-
-    clrShme = colorSchemeDict["default"]
+    var clrShmeSelected = window.location.search.split("?c=")
+    console.log(clrShmeSelected)
+    clrShmeSelected = clrShmeSelected[clrShmeSelected.length-1]
+    if(clrShmeSelected[1] == undefined){window.location.search = "?c=default"}
+    console.log(clrShmeSelected)
+    var clrShme = colorSchemeDict[clrShmeSelected]
     var player1 = new Player(clrShme.player1color1,clrShme.player1color2 , "Player1", window.againstAi, player1FieldCtx, player1KnightsCtx, player1PointsCtx)
     var player2 = new Player(clrShme.player2color1,clrShme.player2color2 , "Player2", false, player2FieldCtx, player2KnightsCtx, player2PointsCtx)
     var neutralColor = clrShme.neutralColor
