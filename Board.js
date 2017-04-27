@@ -19,7 +19,7 @@ function Board(boardSize, crownColor, fieldColor, fieldBorderColor,backgroundCol
   this.size = boardSize//number of fields
   this.borderPixels = window.LINEWIDTH*2//borderPixels
   this.fields = []
-  this.remainingStones = Math.ceil(boardSize**2/1.55)//52//FIXME SOMETHING decreases this number too quickly. Game ended with only 45 stones played for example.
+  this.remainingStones = Math.ceil(boardSize**2/1.56)//52 when boardSize == 9//FIXME SOMETHING decreases this number too quickly. Game ended with only 45 stones played for example.
   this.crownPosition = {"x": Math.floor(this.size/2), "y": Math.floor(this.size/2)}
   this.lastCrownPosition = this.crownPosition
   this.crownColor = crownColor

@@ -125,13 +125,21 @@ Probably not going to clean it up. Since it works as it is (I think at least).
         dialogBoxActive = true
         var dB = document.createElement("div")
         dB.setAttribute("id","dialogBox")
-        dB.setAttribute("style","position:fixed;top:45%;bottom:bottom:43%;left:30%;right:30%;font-size:0px;color:"+/*activePlayer.color2*/neutralColor+";border:2px;background-color:"+neutralColor/*activePlayer.color*/+";border-style:solid;border-color:"+activePlayer.color2)
-        //dB.innerHTML = "~~ Ai or not? ~~"
-        dB.innerHTML = "<br><button id=\"againstAi\" style = \"background-color:"+inactivePlayer.color2+";color:"+inactivePlayer.color+"\">Against Ai</button>"
-        dB.innerHTML += "<br><button id=\"playersOnly\" style = \"background-color:"+activePlayer.color2+";color:"+activePlayer.color+"\">2 Player</button>"
+        //FIXME probably should have a global dialog box style.
+        dB.setAttribute("style","text-align: center; position:fixed;top:45%;bottom:bottom:45%;left:30%;right:30%;font-size:0px;color:"+/*activePlayer.color2*/neutralColor+";border:2px;background-color:"+neutralColor/*activePlayer.color*/+";border-style:solid;border-color:"+activePlayer.color2)
+        //dB.innerHTML = "~~ Ai or not? ~ ~"
+        dB.innerHTML = "<br><button id=\"againstAi\"    style = \"background-color:"+inactivePlayer.color2+";color:"+inactivePlayer.color +";\">Against Ai</button>"
+        dB.innerHTML += "<br><button id=\"playersOnly\" style = \"background-color:"+activePlayer.color2  +";color:"+activePlayer.color   +";\">2 Player</button>"
         document.body.appendChild(dB)
-        document.getElementById("againstAi").onclick = function(){setAi(true)}
-        document.getElementById("playersOnly").onclick = function(){setAi(false)}
+        
+        var pve = document.getElementById("againstAi")
+        var pvp = document.getElementById("playersOnly")
+        pve.onclick = function(){setAi(true)}
+        pvp.onclick = function(){setAi(false)}
+        
+        var style = "width: 40%;"
+        pve.setAttribute("style", pve.getAttribute("style")+style)
+        pvp.setAttribute("style", pvp.getAttribute("style")+style)
     }
     
     function fillInBackground(ctx,backgroundColor){
