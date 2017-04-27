@@ -6,7 +6,7 @@ function BWScheme(){
     this.player2color2     =    'rgba(0, 0, 0, 1)'
     this.neutralColor      =    'rgba(122, 122, 122, 1)'
     this.backgroundImage   =    "mandalaSpaceyBlur.jpg"
-    this.backgroundColor   =    'rgba(0,0,0,0.0)'
+    this.backgroundColor   =    'rgba(255,255,255,0.0)'
     this.fieldColor        =    'rgba(60, 60, 60,0.5)'
     this.fieldBorderColor  =    'rgb(20,20,20)'
     this.crownColor        =    'rgb(255,0,0)'
@@ -34,8 +34,8 @@ function DarkColorScheme(){
     this.backgroundImage   =    ""
     this.backgroundColor   =    'rgba(0,0,0,0.0)'
     this.fieldColor        =    'rgba(60, 60, 60, 0.53)'
-    this.fieldBorderColor  =    'rgb(22,22,22)'
-    this.crownColor        =    'rgb(255, 0, 0)'
+    this.fieldBorderColor  =    'rgba(0,0,0,0)'
+    this.crownColor        =    'rgb(255, 0, 90)'
 }   
 
 function TronColorScheme(){ 
