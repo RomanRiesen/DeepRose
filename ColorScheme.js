@@ -39,15 +39,15 @@ function DarkColorScheme(){
 }   
 
 function TronColorScheme(){ 
-    this.player1color2     =    'rgb(255, 220, 0)'
+    this.player1color2     =    'rgb(255, 191, 0)'
     this.player1color1     =    'rgb(0,0,0)'
     this.player2color2     =    'rgb(50, 200, 255)'
     this.player2color1     =    'rgb(0,0,0)'
     this.neutralColor      =    'rgba(80, 80, 80, 1)'
     this.backgroundImage   =    ""
     this.backgroundColor   =    'rgba(0,0,0,0.0)'
-    this.fieldColor        =    'rgba(60, 60, 60, 0.53)'
-    this.fieldBorderColor  =    'rgb(22,22,22)'
+    this.fieldColor        =    'black'
+    this.fieldBorderColor  =    'rgba(200, 20,20, 0.4)'
     this.crownColor        =    'rgb(255, 0, 0)'
 }   
 
