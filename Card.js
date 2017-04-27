@@ -31,7 +31,7 @@ function Card(dir, mag){//should be flyweight
     ctx.arc(x+width*0.5,y+height*0.5,height/20,0,2*Math.PI)
     ctx.fill()
 
-    ctx.lineWidth = window.LINEWIDTH*1.5
+    ctx.lineWidth = window.LINEWIDTH*2
     ctx.strokeStyle = player.color
     for(var i = 1; i <= 3; i++){
         ctx.beginPath()
