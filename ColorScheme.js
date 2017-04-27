@@ -26,10 +26,10 @@ function DefaultScheme(){
 }   
 
 function DarkColorScheme(){ 
-    this.player1color1     =    'rgb(0, 250, 0)'
-    this.player1color2     =    'rgb(0,0,0)'
-    this.player2color1     =    'rgb(50, 200, 255)'
-    this.player2color2     =    'rgb(0,0,0)'
+    this.player1color2     =    'rgb(0, 250, 0)'
+    this.player1color1     =    'rgb(0,0,0)'
+    this.player2color2     =    'rgb(50, 200, 255)'
+    this.player2color1     =    'rgb(0,0,0)'
     this.neutralColor      =    'rgba(80, 80, 80, 1)'
     this.backgroundImage   =    ""
     this.backgroundColor   =    'rgba(0,0,0,0.0)'
