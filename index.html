@@ -193,7 +193,7 @@ DISCLAIMER:
 
     window.LINEWIDTH = (xUnit+yUnit)/150
 
-    window.TURNTIME = 700//Milliseconds of pause between player and ai
+    window.TURNTIME = 900//Milliseconds of pause between player and ai
 
     var player1Field      = getContextWithSizesAndCanvas("player1Canvas").canvas//awful
     var player1FieldCtx   = getContextWithSizesAndCanvas("player1Canvas").ctx
@@ -227,10 +227,16 @@ DISCLAIMER:
     var dialogBoxActive = false//FIXME TODO god beware, it's a global! and it should probably be solved differently
     window.againstAi = true
 
-    var clrShmeSelected = window.location.search.split("?c=")
+
+    //function locationHashChanged() {
+    // FIXME use something like this to update the colors of the game: if (location.hash === "#irgendeinCoolesFeature") {}
+    var clrShmeSelected = window.location.hash.split("c=")
     clrShmeSelected = clrShmeSelected[clrShmeSelected.length-1]
-    if(clrShmeSelected[1] == undefined){window.location.search = "?c=default"}
+    console.log(clrShmeSelected);
+    if(clrShmeSelected == ""){window.location.hash = "c=default"; clrShmeSelected = "default";}
+    console.log(clrShmeSelected);
     var clrShme = colorSchemeDict[clrShmeSelected.toLowerCase()]
+    
     var player1 = new Player(clrShme.player1color1,clrShme.player1color2 , "Player1", window.againstAi, player1FieldCtx, player1KnightsCtx, player1PointsCtx)
     var player2 = new Player(clrShme.player2color1,clrShme.player2color2 , "Player2", false, player2FieldCtx, player2KnightsCtx, player2PointsCtx)
     var neutralColor = clrShme.neutralColor
