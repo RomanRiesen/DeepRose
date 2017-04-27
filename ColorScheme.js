@@ -33,8 +33,8 @@ function DarkColorScheme(){
     this.neutralColor      =    'rgba(80, 80, 80, 1)'
     this.backgroundImage   =    ""
     this.backgroundColor   =    'rgba(0,0,0,0.0)'
-    this.fieldColor        =    'rgba(0, 0, 0, 0.53)'
-    this.fieldBorderColor  =    'rgb(255,0,0)'
+    this.fieldColor        =    'rgba(60, 60, 60, 0.53)'
+    this.fieldBorderColor  =    'rgb(22,22,22)'
     this.crownColor        =    'rgb(255, 0, 0)'
 }   
 
