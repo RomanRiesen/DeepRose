@@ -4,16 +4,16 @@
 Copyright Roman Riesen 2016-2017
 
 License:
-    Do wathever you want. Just keep this comment in this file.
- -->
+Do wathever you want. Just keep this comment in this file.
+-->
 
- <!--
+<!--
 DISCLAIMER:
 
- Many, many, many things are quick and dirty.
+Many, many, many things are quick and dirty.
 
- Probably not going to clean it up. Since it works as it is (I think at least).
-  -->
+Probably not going to clean it up. Since it works as it is (I think at least).
+-->
 
 <script src="Card.js"></script>
 <script src="Deck.js"></script>
@@ -31,10 +31,10 @@ DISCLAIMER:
 <title>Rosenk&ouml;nig</title>
 
 <body style = "width:100%; text-align:center;">
-
-
+    
+    
     <!--<table style="position:absolute;top:18%;bottom:18%;width:100%; text-align: center;">-->
-
+    
     <table id = "game" style="position:absolute;width:100%;height:100%;text-align: center;">
         <tr>
             <td>
@@ -47,7 +47,7 @@ DISCLAIMER:
                 <canvas id="player1KnightCanvas" class = "right" width="100" height="100"></canvas>
             </td>
         </tr>
-
+        
         <tr>
             <td style="">
                 <canvas id="leftPanel" class = "left" width="100" height="600"></canvas>
@@ -60,7 +60,7 @@ DISCLAIMER:
                     <canvas id="rightPanel" class = "right" width="100" height="600"></canvas>
                 </td>
             </tr>
-
+            
             <tr>
                 <td>
                     <canvas id="player2KnightCanvas" class = "left" width="100" height="100"></canvas>
@@ -76,7 +76,7 @@ DISCLAIMER:
         <!-- <canvas id = "background" style = "width:100%;height:100%;z-index:20;transform:translate(0,0)"></canvas> -->
     </body>
     <script>
-
+    
     function getIndexesOfFieldAtCursor(event, border, boardSize){//FIXME put into board
         var canvas = document.getElementById("BoardCanvas")
         var rect = canvas.getBoundingClientRect()
@@ -88,7 +88,7 @@ DISCLAIMER:
         var yf = (y/(fieldSizeX+border))
         return {x:Math.floor(xf),y:Math.floor(yf)}
     }
-
+    
     function tempAlert(msg,duration=1000)//FIXME replace text if div still exists
     {
         var el = document.createElement("div")
@@ -101,7 +101,7 @@ DISCLAIMER:
         },duration)
         document.body.appendChild(el)
     }
-
+    
     function dialogBox(msg,callback = function(){})//FIXME replace text if div still exists
     {
         dialogBoxActive = true
@@ -112,27 +112,35 @@ DISCLAIMER:
         document.body.appendChild(dB)
         dB.addEventListener('mousedown',function(event){dB.parentNode.removeChild(dB); dialogBoxActive = false;callback()})
     }
-
+    
     function aiOr2PlayerBox(callback = function(){})//FIXME replace text if div still exists
     {
+        function setAi(bool){
+            window.againstAi = bool
+            dB.parentNode.removeChild(dB)
+            dialogBoxActive = false
+            callback()
+        }
+        
         dialogBoxActive = true
         var dB = document.createElement("div")
         dB.setAttribute("id","dialogBox")
         dB.setAttribute("style","position:fixed;top:45%;bottom:bottom:43%;left:30%;right:30%;font-size:0px;color:"+/*activePlayer.color2*/neutralColor+";border:2px;background-color:"+neutralColor/*activePlayer.color*/+";border-style:solid;border-color:"+activePlayer.color2)
         //dB.innerHTML = "~~ Ai or not? ~~"
-        dB.innerHTML = "<br><button onclick=\"window.againstAi = true;\" style = \"background-color:"+inactivePlayer.color2+";color:"+inactivePlayer.color+"\">Against Ai</button>"
-        dB.innerHTML += "<br><button onclick=\"window.againstAi = false;\" style = \"background-color:"+activePlayer.color2+";color:"+activePlayer.color+"\">2 Player</button>"
+        dB.innerHTML = "<br><button id=\"againstAi\" style = \"background-color:"+inactivePlayer.color2+";color:"+inactivePlayer.color+"\">Against Ai</button>"
+        dB.innerHTML += "<br><button id=\"playersOnly\" style = \"background-color:"+activePlayer.color2+";color:"+activePlayer.color+"\">2 Player</button>"
         document.body.appendChild(dB)
-        dB.addEventListener('mousedown',function(event){dB.parentNode.removeChild(dB); dialogBoxActive = false;callback()})
+        document.getElementById("againstAi").onclick = function(){setAi(true)}
+        document.getElementById("playersOnly").onclick = function(){setAi(false)}
     }
-
+    
     function fillInBackground(ctx,backgroundColor){
         ctx.clearRect(-100,-100,10000, 10000)
         ctx.beginPath()
         ctx.fillStyle = backgroundColor
         ctx.fillRect(-100,-100,10000,10000)//FIXME UGLY "HAcK"//get actual size
     }
-
+    
     function getContextWithSizesAndCanvas(string){
         var canvas  = document.getElementById(string)
         var ctx     =  canvas.getContext("2d")
@@ -140,8 +148,8 @@ DISCLAIMER:
         ctx.height  =  canvas.height
         return{"ctx":ctx,"canvas":canvas}
     }
-
-
+    
+    
     function getClickedCardIndex(canvas){
         var canvas = document.getElementById("player2Canvas")//!!! FIXME Detect when game has ended or one player is unable to play, so he has to pass.
         var rect = canvas.getBoundingClientRect()
@@ -149,15 +157,15 @@ DISCLAIMER:
         var fieldSizeX = (canvas.clientWidth/player2.cards.length)
         return Math.floor(x/(fieldSizeX))
     }
-
-
+    
+    
     </script>
-
+    
     <script>
     //FIXME function onwindowresize adjustElement(ctx, width, height){} and use the proper sizes, as in the link in the mail that I sent to myself (from mcs to gmx mail)
-
-
-
+    
+    
+    
     var partitions = 7//In how many parts the display is split (cards will have a height of 1 part)
     var totHeight = window.innerHeight
     var totWidth = window.innerWidth
@@ -166,35 +174,35 @@ DISCLAIMER:
     //setting all the canvas sizes. Yey. Responsive!
     document.getElementById("BoardCanvas").width = Math.min((partitions-2)*xUnit, (partitions-2)*yUnit)//6*xUnit
     document.getElementById("BoardCanvas").height = Math.min((partitions-2)*xUnit, (partitions-2)*yUnit)//6*yUnit
-
+    
     document.getElementById("player1Canvas").width = Math.min((partitions-2)*xUnit, (partitions-2)*yUnit)
     document.getElementById("player1Canvas").height = yUnit
-
+    
     document.getElementById("player2Canvas").width = Math.min((partitions-2)*xUnit, (partitions-2)*yUnit)
     document.getElementById("player2Canvas").height = yUnit
-
+    
     document.getElementById("player1allignmentCanvas").width = xUnit
     document.getElementById("player1allignmentCanvas").height = yUnit
-
+    
     document.getElementById("player2allignmentCanvas").width =  xUnit
     document.getElementById("player2allignmentCanvas").height = yUnit
-
+    
     document.getElementById("player1KnightCanvas").width = xUnit
     document.getElementById("player1KnightCanvas").height = yUnit
-
+    
     document.getElementById("player2KnightCanvas").width = xUnit
     document.getElementById("player2KnightCanvas").height = yUnit
-
+    
     document.getElementById("leftPanel").width = xUnit
     document.getElementById("leftPanel").height = (partitions-2)*yUnit
-
+    
     document.getElementById("rightPanel").width = xUnit
     document.getElementById("rightPanel").height = (partitions-2)*yUnit
-
+    
     window.LINEWIDTH = (xUnit+yUnit)/150
-
+    
     window.TURNTIME = 900//Milliseconds of pause between player and ai
-
+    
     var player1Field      = getContextWithSizesAndCanvas("player1Canvas").canvas//awful
     var player1FieldCtx   = getContextWithSizesAndCanvas("player1Canvas").ctx
     var player2Field      = getContextWithSizesAndCanvas("player2Canvas").canvas
@@ -203,36 +211,34 @@ DISCLAIMER:
     var player1KnightsCtx = getContextWithSizesAndCanvas("player1KnightCanvas").ctx
     var player2Knights    = getContextWithSizesAndCanvas("player2KnightCanvas").canvas
     var player2KnightsCtx = getContextWithSizesAndCanvas("player2KnightCanvas").ctx
-
+    
     var player1PointsCtx  = getContextWithSizesAndCanvas("player1allignmentCanvas").ctx
     var player2PointsCtx  = getContextWithSizesAndCanvas("player2allignmentCanvas").ctx
-
+    
     var leftPanel         = getContextWithSizesAndCanvas("leftPanel").canvas
     var leftPanelCtx      = getContextWithSizesAndCanvas("leftPanel").ctx
     var rightPanel        = getContextWithSizesAndCanvas("rightPanel").canvas
     var rightPanelCtx     = getContextWithSizesAndCanvas("rightPanel").ctx
-
+    
     var c   = getContextWithSizesAndCanvas("BoardCanvas").canvas
     var ctx  = getContextWithSizesAndCanvas("BoardCanvas").ctx
-
+    
     //createBackground()
-
-
+    
+    
     function setup () {}
-
+    
     //FIXME should have a GAME object, that just basically has a reference to everything. Makes it also much easier to store and reload stuff.
     var boardSize = 9//9 or 11 works good.
     var border = 6
-
+    
     var dialogBoxActive = false//FIXME TODO god beware, it's a global! and it should probably be solved differently
 
     //function locationHashChanged() {
     // FIXME use something like this to update the colors of the game: if (location.hash === "#irgendeinCoolesFeature") {}
     var clrShmeSelected = window.location.hash.split("c=")
     clrShmeSelected = clrShmeSelected[clrShmeSelected.length-1]
-    console.log(clrShmeSelected);
     if(clrShmeSelected == ""){window.location.hash = "c=default"; clrShmeSelected = "default";}
-    console.log(clrShmeSelected);
     var clrShme = colorSchemeDict[clrShmeSelected.toLowerCase()]
     
     var player1 = new Player(clrShme.player1color1,clrShme.player1color2 , "Player1", window.againstAi, player1FieldCtx, player1KnightsCtx, player1PointsCtx)
@@ -248,59 +254,58 @@ DISCLAIMER:
         player1.name = player1.name+"1"
         player2.name = player1.name+"2"
     }
-
+    
     var board = new Board(boardSize, crownColor,fieldColor,fieldBorderColor,backgroundColor)
-
+    
     var deck = new Deck(leftPanelCtx)
     deck.shuffle()
     for (var i = 0; i < 5; i++) {//give inital cards//FIXME make this a player method
         player1.cards.push(deck.getTopCard())
         player2.cards.push(deck.getTopCard())
     }
-
+    
     var activePlayer = player2
     var inactivePlayer = player1
-
+    
     //Now I only have to set the activePlayer to the correct player.
     board.myDisplay = function(){board.display(ctx,rightPanelCtx,player1,player2,deck,activePlayer)}
     board.myDisplay()
-
+    
     aiOr2PlayerBox()
     //tempAlert(activePlayer.name+" begins!")
-
-    //var ai1 = new AI(player2,player1,3)
-    if(window.againstAi){
-        var ai2 = new AI(player1,player2,3)
-    }
     var useKnight = false//used to keep track if player selected the use of knights
-
+    
     //var gameState = new GameState(board,deck)
-
-
     var isAllowedToPlayCard = true
     var lastPlayerWasAbleToPlay = true
-
+    
     var turn = 0
-
+    
     var unableToPlaySince = 0
-
+    
     var gameEnded = false
-
+    
     function changeActivePlayer(){//FIMXE Need ai vs ai mode for dna training, Human vs Human and Ai vs Ai
         //Maybe do a function for all o them.
         // Or even a "Class"(-function).
         if(gameEnded){return}
-
-        player1.isAi = window.againstAi
-
+        
+        //var ai1 = new AI(player2,player1,3)
+        if(window.againstAi){
+            var ai2 = new AI(player1,player2,3)
+        }
+        
+        player1.isAi = window.againstAi//dynamically update.
+        
+        
         activePlayer = activePlayer == player1? player2 : player1
         inactivePlayer = activePlayer == player1? player1 : player2
-
+        
         if(board.remainingStones <= 0){//clearInterval(interval)
             console.log("The game has ended! by lack of stones to play\nin turn:", Math.floor(turn/2))
             finishGame()
         }
-
+        
         var obj = activePlayer.checkPossibleMoves(board,deck)//FIXME DETAIL: find good name for this object, update Player.js to use the better name.
         //  Possible states
         //    "noPossibleTurnLeft"
@@ -347,14 +352,14 @@ DISCLAIMER:
         if(state == "hasToTakeCardOrPlayKnight"){
             isAllowedToPlayCard = false
         }
-
+        
         lastPlayerWasAbleToPlay = true
         isAllowedToPlayCard = true
-
+        
         unableToPlaySince = 0
         //tempAlert("Now it is "+activePlayer.name+"'s turn!")
         //dialogBox("Now it is "+activePlayer.name+"'s turn!")
-
+        
         //TODO FIXME ONLY TEST CODE (As quite the lot in here.)
         board.myDisplay()
         if(activePlayer.isAi === true){
@@ -365,37 +370,37 @@ DISCLAIMER:
             }, window.TURNTIME)
         }
     }
-
+    
     function finishGame(){
-
+        
         var string = ""
-
+        
         if(board.remainingStones < 1){
             string += "There aren't any stones left.<br>"
         }
-
+        
         var p1Score = player1.countScore(board, deck)
         var p2Score = player2.countScore(board, deck)
-
+        
         if(p1Score > p2Score){
             activePlayer = player1//so board and message colours match the winner colours.
         }else{
             activePlayer = player2
         }
         string += activePlayer.name
-
+        
         string += " won!"
-
-
+        
+        
         //console.log("Game has ended")
         //dialogBox("THE GAME HAS ENDED<br>AND "+ winner + " WON!")
         dialogBox(string)
         board.myDisplay()
         gameEnded = true
     }
-
+    
     //------------------------------------------------------------------------------
-
+    
     //Random random AI game:
     // ai = ai1
     // for(var i = 0; i < 100; i++){
@@ -403,8 +408,8 @@ DISCLAIMER:
     //     ai.playBestNextTurn(board, deck)
     // }
     // board.myDisplay()
-
-
+    
+    
     var currKonamiIndex = 0
     var konamiCode = ["ArrowUp", "ArrowUp", "ArrowDown", "ArrowDown", "ArrowLeft", "ArrowRight", "ArrowLeft", "ArrowRight", "KeyB", "KeyA"]
     document.addEventListener("keydown", function(key){
@@ -425,10 +430,10 @@ DISCLAIMER:
         }
         else{currKonamiIndex = 0}
     })
-
-
-
-
+    
+    
+    
+    
     // //Mouse interaction:
     // document.getElementById("BoardCanvas").addEventListener('mousedown',function(event){
     //   var pos = getIndexesOfFieldAtCursor(event, border, boardSize)
@@ -442,9 +447,9 @@ DISCLAIMER:
     //   //turn()
     //   changeActivePlayer()
     // })
-
-
-
+    
+    
+    
     //    "noPossibleTurnLeft"
     //    "hasToPlayKnight"
     //    "hasToTakeCard"
@@ -463,7 +468,7 @@ DISCLAIMER:
         useKnight = false
         changeActivePlayer()
     })
-
+    
     document.getElementById("player2Canvas").addEventListener('mousedown',function(event){
         //TODO find a better place for this listener.
         if(activePlayer.isAi){return}
@@ -477,7 +482,7 @@ DISCLAIMER:
         useKnight = false
         changeActivePlayer()
     })
-
+    
     document.getElementById("player1KnightCanvas").addEventListener('mousedown',function(event){
         //TODO find a better place for this listener.
         if(activePlayer.isAi){return}
@@ -487,7 +492,7 @@ DISCLAIMER:
             tempAlert("No knights left!")
             return
         }
-
+        
         if(useKnight == true){
             useKnight = false
             tempAlert("Use of knight deselected")
@@ -496,7 +501,7 @@ DISCLAIMER:
         tempAlert("Click the card to be used with the knight (covering a part of the board...",/* is a stupid idea for telling somebody to make a game decision based on the state of named board. With this text added it is probably the full board. LOL.)",*/2000)
         useKnight = true
     })
-
+    
     document.getElementById("player2KnightCanvas").addEventListener('mousedown',function(event){
         //TODO find a better place for this listener.
         if(activePlayer.isAi){return}
@@ -513,9 +518,9 @@ DISCLAIMER:
         }//FIXME TODO FIXME ACUTUALLY IMPORTANT READ AND DO THIS !!! add a visual indication when useKnight is true
         tempAlert("Click the card to be used with the knight (covering a part of the board...",/* is a stupid idea for telling somebody to make a game decision based on the state of named board. With this text added it is probably the full board. LOL.)",*/2000)
         useKnight = true
-
+        
     })
-
+    
     document.getElementById("leftPanel").addEventListener('mousedown',function(){
         if(activePlayer.isAi){return}
         if(activePlayer != player1){return}
@@ -528,7 +533,7 @@ DISCLAIMER:
             } ,50)
         }else{tempAlert(msg,2000)}
     })
-
+    
     document.getElementById("leftPanel").addEventListener('mousedown',function(){
         if(activePlayer.isAi){return}
         if(activePlayer != player2){return}
@@ -541,8 +546,8 @@ DISCLAIMER:
             },50)
         }else{tempAlert(msg,2000)}
     })
-
+    
     </script>
-
-</body>
-</html>
+    
+    </body>
+    </html>
