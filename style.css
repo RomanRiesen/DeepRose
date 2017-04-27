@@ -27,7 +27,6 @@ canvas{
 }
 
 .centerHor {
-  /*background-color: rgb(0, 0, 255);*/
   padding-left: 0;
   padding-right: 0;
   margin-left: auto;
@@ -36,7 +35,6 @@ canvas{
   display: block;
 }
 .left{
-  /*background-color: rgb(0, 0, 255);*/
   padding-left: 0;
   padding-right: 0;
   margin-left: auto;
@@ -45,7 +43,6 @@ canvas{
   display: block;
 }
 .right{
-  /*background-color: rgb(0, 0, 255);*/
   padding-left: 0;
   padding-right: 0;
   margin-left: 0;
