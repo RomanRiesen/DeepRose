@@ -228,11 +228,9 @@ DISCLAIMER:
     window.againstAi = true
 
     var clrShmeSelected = window.location.search.split("?c=")
-    console.log(clrShmeSelected)
     clrShmeSelected = clrShmeSelected[clrShmeSelected.length-1]
     if(clrShmeSelected[1] == undefined){window.location.search = "?c=default"}
-    console.log(clrShmeSelected)
-    var clrShme = colorSchemeDict[clrShmeSelected]
+    var clrShme = colorSchemeDict[clrShmeSelected.toLowerCase()]
     var player1 = new Player(clrShme.player1color1,clrShme.player1color2 , "Player1", window.againstAi, player1FieldCtx, player1KnightsCtx, player1PointsCtx)
     var player2 = new Player(clrShme.player2color1,clrShme.player2color2 , "Player2", false, player2FieldCtx, player2KnightsCtx, player2PointsCtx)
     var neutralColor = clrShme.neutralColor

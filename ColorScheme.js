@@ -44,7 +44,7 @@ colorSchemeDict = {
 
 "default":new DefaultScheme(),
 "dark":new DarkColorScheme(),
-"BW":new BWScheme()
+"bw":new BWScheme()
 
 }
 
