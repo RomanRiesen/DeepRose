@@ -13,7 +13,7 @@ function BWScheme(){
 }   
 
 function DefaultScheme(){   
-    this.player1color1     =    'rgb(255, 140, 0)'
+    this.player1color1     =    'rgb(240, 130, 0)'
     this.player1color2     =    'rgb(255, 240, 70)'
     this.player2color1     =    'rgb(50, 103, 222)'
     this.player2color2     =    'rgb(0, 209, 255)'
@@ -30,7 +30,7 @@ function DarkColorScheme(){
     this.player1color1     =    'rgb(0,0,0)'
     this.player2color2     =    'rgb(50, 200, 255)'
     this.player2color1     =    'rgb(0,0,0)'
-    this.neutralColor      =    'rgba(80, 80, 80, 1)'
+    this.neutralColor      =    'rgba(30, 30, 30, 0.8)'
     this.backgroundImage   =    ""
     this.backgroundColor   =    'rgba(0,0,0,0.0)'
     this.fieldColor        =    'rgba(60, 60, 60, 0.53)'
