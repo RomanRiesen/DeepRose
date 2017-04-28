@@ -21,8 +21,8 @@ this.drawCardScoreValues = [tc0, tc1, tc2]
 this.drawCardPolynom = new Polynomial(2, this.drawCardScoreValues)
 this.playKnightPolynom = new Polynomial(2, this.playKnightScoreValues)
 
-this.drawCardScore = function(x = 1){return this.drawCardPolynom.valueAt(x)}
-this.playKnightScore = function(x = 1){return this.playKnightPolynom.valueAt(x)}
+this.drawCardScore = function(x = board.remainingStones){return this.drawCardPolynom.valueAt(x)}
+this.playKnightScore = function(x = board.remainingStones){return this.playKnightPolynom.valueAt(x)}
 }
 
 
@@ -41,14 +41,17 @@ function Node(v = null){
 
 
 
-function AI(player,oponent,depth){//FIXME ai2 does kind of never play it's 4th card. No AI seems to know which fields it already owns and cannot get on again.
+function AI(player,oponent,depth){
+//FIXME the function that determines the value of a played card
+// should incorporate the amount of neighbouring fieds that belong to the player!!!
+//although it kind of already does this by the nature of how the score is determined.
   this.player = player
   this.startPlayer = player
   this.oponent = oponent
   this.depth = depth
   this.treeNode = new Node()
   this.notAbleToPlayPenalty = -50
-  this.dna = new Dna(-16, 1.2, 0, 4, 0.9, 0)
+  this.dna = new Dna(-20, 1.1, 0, 4, 0.99, 0)
   //this.knightPenalty = this.dna.playKnightScore()//-16//Low, constant penalties (-9) lead to an early waste of knights, leading to a lead for the AI, then the player.
                          //penalty should probably increase as the ai has less knights available
   //this.drawCardScore = this.dna.drawCardScore()//2

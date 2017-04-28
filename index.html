@@ -14,6 +14,7 @@ Many, many, many things are quick and dirty.
 
 Probably not going to clean it up. Since it works as it is (I think at least).
 
+A direction-denial mechanic would be interesting (where each player chooses (and is able to change at any time) a direction, of which no one is allowed to play)
 
 FIXME create script to minify all the js, css, html files and put them into a subfolder (minified, which also should be a branch. Then push the branches to git.
 
@@ -415,9 +416,15 @@ FIXME load scripts async, but I'll have to wait for all, before the main is able
         }else{
             activePlayer = player2
         }
-        string += activePlayer.name
+        name = activePlayer.name
+        //if against AI say if computer or you won.
+        if(activePlayer.isAi){
+            name = "The computer"
+        } else if (window.againstAi) {
+            name  = "you!"
+        }
         
-        string += " won!"
+        string += name+" won!"
         
         
         //console.log("Game has ended")
