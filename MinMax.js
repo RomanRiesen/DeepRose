@@ -51,7 +51,7 @@ function AI(player,oponent,depth){
   this.depth = depth
   this.treeNode = new Node()
   this.notAbleToPlayPenalty = -50
-  this.dna = new Dna(-20, 1.1, 0, 4, 0.99, 0)
+  this.dna = new Dna(-32,-1, 0, 2, 0.99, 0)
   //this.knightPenalty = this.dna.playKnightScore()//-16//Low, constant penalties (-9) lead to an early waste of knights, leading to a lead for the AI, then the player.
                          //penalty should probably increase as the ai has less knights available
   //this.drawCardScore = this.dna.drawCardScore()//2
