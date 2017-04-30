@@ -201,7 +201,7 @@ FIXME load scripts async, but I'll have to wait for all, before the main is able
     var totHeight = window.innerHeight
     var totWidth = window.innerWidth
     var yUnit = (totHeight)/partitions
-    var xUnit = totWidth/partitions
+    var xUnit = (totWidth-12)/partitions
     //setting all the canvas sizes. Yey. Responsive!
     document.getElementById("BoardCanvas").width = Math.min((partitions-2)*xUnit, (partitions-2)*yUnit)//6*xUnit
     document.getElementById("BoardCanvas").height = Math.min((partitions-2)*xUnit, (partitions-2)*yUnit)//6*yUnit
@@ -421,9 +421,9 @@ FIXME load scripts async, but I'll have to wait for all, before the main is able
         name = activePlayer.name
         //if against AI say if computer or you won.
         if(activePlayer.isAi){
-            name = "The computer"
+            name = "The computer "
         } else if (window.againstAi) {
-            name  = "you!"
+            name  = "you "
         }
 
         string += name+" won!"
@@ -456,7 +456,7 @@ FIXME load scripts async, but I'll have to wait for all, before the main is able
             console.log(currKonamiIndex)
             if(currKonamiIndex == konamiCode.length){
                 tempAlert("#HACKS", 200)
-                //activePlayer.additionalPoints += 5+Math.round(30*Math.random())
+                //activePlayer.additionalPoints += 50+Math.round(30*Math.random())
                 activePlayer.knightCount = 5
                 //Give player 10 cards or something?
                 window.TURNTIME = 200

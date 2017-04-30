@@ -148,7 +148,7 @@ function Player(color, color2, name, isAi, canvasContext, knightCanvasContext, p
             var textHeight = (width/height)*this.pointsCanvasContext.width
             var maxWidth = this.pointsCanvasContext.width
             var newHeight=height
-            while(textWidth > maxWidth){//reduce height until it fits. Doable with some maths, but...eh.//FIXME Dreisatz benutzen.
+            while(textWidth > maxWidth -10){//reduce height until it fits. Doable with some maths, but...eh.//FIXME Dreisatz benutzen.
                 this.pointsCanvasContext.font = "font-weight light "
                 this.pointsCanvasContext.font = (newHeight--)+"px Arial";
                 textWidth = this.pointsCanvasContext.measureText(score).width//at most the width of the context.
