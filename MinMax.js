@@ -14,9 +14,9 @@ function Turn(){
 
 
 //used to find best parameters for the value of knights, taking cards (and maybe not being able to play)
-function Dna(k0, k1, k2, tc0, tc1, tc2){
-this.playKnightScoreValues = [k0, k1, k2]
-this.drawCardScoreValues = [tc0, tc1, tc2]
+function Dna(k0, k1, k2, k3, tc0, tc1, tc2, tc3){
+this.playKnightScoreValues = [k0, k1, k2, k3]
+this.drawCardScoreValues = [tc0, tc1, tc2, tc3]
 
 this.drawCardPolynom = new Polynomial(2, this.drawCardScoreValues)
 this.playKnightPolynom = new Polynomial(2, this.playKnightScoreValues)
@@ -51,7 +51,7 @@ function AI(player,oponent,depth){
   this.depth = depth
   this.treeNode = new Node()
   this.notAbleToPlayPenalty = -50
-  this.dna = new Dna(-32,-1, 0, 2, 0.99, 0)
+  this.dna = new Dna(-32,-1, 0, 0, 2, 0.99, 0, 0)
   //this.knightPenalty = this.dna.playKnightScore()//-16//Low, constant penalties (-9) lead to an early waste of knights, leading to a lead for the AI, then the player.
                          //penalty should probably increase as the ai has less knights available
   //this.drawCardScore = this.dna.drawCardScore()//2
@@ -107,13 +107,6 @@ this.playKnightTurn = function(index){
 
 
 this.listAllTurns = function(board, deck, player = this.player, oponent = this.oponent){
-  /*FIXME consider taking the difference between the two players as a measure of success.
-    +Better AI probably
-    +More realistic
-
-    -Player might feel bad since this evaluation might lead to the AI being more destructive.
-  */
-  //console.log(player);
   var obj = player.checkPossibleMoves(board,deck)
   //    "noPossibleTurnLeft"
   //    "hasToPlayKnight"
