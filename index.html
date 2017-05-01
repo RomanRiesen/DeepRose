@@ -201,7 +201,7 @@ FIXME load scripts async, but I'll have to wait for all, before the main is able
     var totHeight = window.innerHeight
     var totWidth = window.innerWidth
     var yUnit = (totHeight)/partitions
-    var xUnit = (totWidth-12)/partitions
+    var xUnit = (totWidth-2)/partitions
     //setting all the canvas sizes. Yey. Responsive!
     document.getElementById("BoardCanvas").width = Math.min((partitions-2)*xUnit, (partitions-2)*yUnit)//6*xUnit
     document.getElementById("BoardCanvas").height = Math.min((partitions-2)*xUnit, (partitions-2)*yUnit)//6*yUnit
