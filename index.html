@@ -33,6 +33,7 @@ FIXME load scripts async, but I'll have to wait for all, before the main is able
 <script src="SaveAndLoad.js"></script>
 <script src="backgroundTest.js"></script>
 <script src="ColorScheme.js"></script>
+<script src="ColorScheme.js"></script>
 
 <link rel="stylesheet" type="text/css" href="style.css">
 <link rel="ICON"href="DeepRose.png">
@@ -195,8 +196,6 @@ FIXME load scripts async, but I'll have to wait for all, before the main is able
     <script>
     //FIXME function onwindowresize adjustElement(ctx, width, height){} and use the proper sizes, as in the link in the mail that I sent to myself (from mcs to gmx mail)
 
-
-
     var partitions = 7//In how many parts the display is split (cards will have a height of 1 part)
     var totHeight = window.innerHeight
     var totWidth = window.innerWidth
@@ -322,11 +321,12 @@ FIXME load scripts async, but I'll have to wait for all, before the main is able
         if(gameEnded){return}
 
         //var ai1 = new AI(player2,player1,3)
+        player1.isAi = window.againstAi//dynamically update.
+        
         if(window.againstAi){
             var ai2 = new AI(player1,player2,3)
         }
 
-        player1.isAi = window.againstAi//dynamically update.
 
 
         activePlayer = activePlayer == player1? player2 : player1

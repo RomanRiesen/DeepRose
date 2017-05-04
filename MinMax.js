@@ -98,9 +98,12 @@ this.playKnightTurn = function(index){
     turn.cardIndex = index
     turn.playKnight = true
     playerCopy.playCard(turn.cardIndex, boardCopy, deckCopy, true, true)
-    turn.score = this.__getScore(boardCopy, playerCopy, oponent.copy())
-        +this.dna.playKnightScore()//playerCopy.countScore(boardCopy) //*((player.maxKnights+1)-player.knightCount)
-    //console.log("Turn:", turn);
+    var score1 = this.__getScore(boardCopy, playerCopy, oponent.copy())
+    turn.score = score1
+        +this.dna.playKnightScore()
+        -playerCopy.countScore(boardCopy)**1,1*0.125//FIXME experimental!
+        //playerCopy.countScore(boardCopy) //*((player.maxKnights+1)-player.knightCount)
+    console.log("Knight has a value of "+turn.score+" for the ai.")
     return turn
 }
 
@@ -116,9 +119,6 @@ this.listAllTurns = function(board, deck, player = this.player, oponent = this.o
   var state = obj.state
   var playableIndices = obj.playableIndices
   var knightIndices = obj.playableWithKnightIndices
-
-  //console.log(state, knightIndices);
-
   //var currentNode = node !== undefined ? node : new Node()
 
   var turns = []//turns stored each time the possible moves are evaluated.
@@ -200,7 +200,6 @@ this.listAllTurns = function(board, deck, player = this.player, oponent = this.o
             turn.score = playerCopy.countScore(board)+this.notAbleToPlayPenalty
             turn.hasToPass = true
         }
-        //console.log("Turn: ", turn);
         turns.push(turn)
         break
 }
@@ -208,7 +207,6 @@ this.listAllTurns = function(board, deck, player = this.player, oponent = this.o
   //if the player was actually unable to take a card, this the turns with tookCard === true will be removed.
   if(player.copy().addCard(deck.copy()) !== true){
       for (var i = turns.length-1; i >= 0; i--) {
-          //console.log("Turn to maybe remove: ", turns[i], turns);
           if(turn === undefined || turns[i].tookCard === true){//FIXME sometimes turns are undefined and I don't know why
               turns.splice(i, 1)
           }
@@ -241,7 +239,6 @@ this.createStrategyTree = function(board, deck, player = this.player, oponent = 
      oponent2    = oponent.copy()
      player2     = player.copy()
     //for all the turns call listAllTurns with the new node and an inversion of player and oponent
-    // console.log(turns[i])
     //Play turn by player so the board and deck change.
     this.player.playTurn(turns[i], board2, deck2)
     console.log(player.cards[0] == player2.cards[0]);
@@ -275,9 +272,7 @@ this.takeRandomTurn = function(board,deck){//FIXME "cannot" use knights. No chan
 var playableIndices = this.player.checkPossibleMoves(board,deck).playableIndices
     if (playableIndices.length === 0){
       //no playable card left -> take a card
-      //console.log("no playable indices to play left.")
       var wasAbleToDrawCard = (this.player.addCard(deck) === true)
-      //Econsole.log(wasAbleToDrawCard);
       if (!wasAbleToDrawCard){
         //not able to play or take card
         //(without using a knight, which I do not do for now in the takeRandomTurn function)
@@ -287,7 +282,6 @@ var playableIndices = this.player.checkPossibleMoves(board,deck).playableIndices
 
     //Randomly draw a card
     var c = Math.random()//*((this.player.maxCards-playableIndices.length)/this.player.maxCards)
-    //console.log(c)
     if(c < 0.7){
       if (!(this.player.addCard(deck) === true)){
         return true
@@ -312,7 +306,6 @@ this.playBestNextTurn = function(board, deck){//FIXME check whether game has end
     if(bestTurn.hasToPass){
         return
     }
-    //console.log(bestTurn)
     if(bestTurn.tookCard === true){//FIXME With a value of 2, drawing a card is in the beginning always better than any other move, thus I'll have to check in the listAllTurns function whether I can draw a card.
         this.player.addCard(deck)
         return
