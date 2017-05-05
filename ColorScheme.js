@@ -53,15 +53,15 @@ function TronColorScheme(){
 
 function NeonColorScheme(){ 
     this.player1color2     =    'rgb(0, 191, 0)'
-    this.player1color1     =    'rgb(191,0,80)'
-    this.player2color2     =    'rgb(191,0,80)'
+    this.player1color1     =    'rgb(191,0,100)'
+    this.player2color2     =    'rgb(191,0,100)'
     this.player2color1     =    'rgb(0, 191, 0)'
-    this.neutralColor      =    'rgba(100,100,255,0.4)'
+    this.neutralColor      =    'rgba(100,100,255,0.8)'
     this.backgroundImage   =    'mandalaSpaceyBlur.jpg'
     this.backgroundColor   =    'rgba(0,0,0,0.0)'
-    this.fieldColor        =    'rgba(255,255,255,0.4)'
+    this.fieldColor        =    'rgba(255,255,255,0.3)'
     this.fieldBorderColor  =    'rgba(100,100,155,0.4)'//'rgb(20, 120, 150)'
-    this.crownColor        =    'rgba(100,100,155,1)'//'rgb(20, 120, 150)'
+    this.crownColor        =    'rgba(100,100,255,1)'//'rgb(20, 120, 150)'
 }   
 
 
@@ -71,7 +71,7 @@ colorSchemeDict = {
 "default":new DefaultScheme(),
 "dark":new DarkColorScheme(),
 //"dark 2":new TronColorScheme(),
-//"neon":new NeonColorScheme(),
+"fresh":new NeonColorScheme(),
 "black and white":new BWScheme()
 
 

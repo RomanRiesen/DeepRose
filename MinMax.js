@@ -14,15 +14,29 @@ function Turn(){
 
 
 //used to find best parameters for the value of knights, taking cards (and maybe not being able to play)
-function Dna(k0, k1, k2, k3, tc0, tc1, tc2, tc3){
+function Dna(k0, k1, k2, k3, tc0, tc1, tc2, tc3){//FIXME need a better way of implementing dna and mutation and stuff. Need dna factory.
 this.playKnightScoreValues = [k0, k1, k2, k3]
 this.drawCardScoreValues = [tc0, tc1, tc2, tc3]
 
-this.drawCardPolynom = new Polynomial(2, this.drawCardScoreValues)
-this.playKnightPolynom = new Polynomial(2, this.playKnightScoreValues)
+this.drawCardPolynom = new Polynomial(3, this.drawCardScoreValues)
+this.playKnightPolynom = new Polynomial(3, this.playKnightScoreValues)
 
 this.drawCardScore = function(x = board.remainingStones){return this.drawCardPolynom.valueAt(x)}
 this.playKnightScore = function(x = board.remainingStones){return this.playKnightPolynom.valueAt(x)}
+
+
+this.maxMutation = [30,10,0.6,0.2,10,2,0.5,0.25]
+this.mutate = function(){
+        var c = 0
+        for (var i = 0; i < this.playKnightScoreValues.length; i++, c++) {
+            this.playKnightScoreValues[i] += Math.random()*this.maxMutation[c]-Math.random()*this.maxMutation[c]
+        }
+        
+        for (var i = 0; i < this.drawCardScoreValues.length; i++, c++) {//continue with the c
+            this.drawCardScoreValues[i] += Math.random()*this.maxMutation[c]-Math.random()*this.maxMutation[c]
+        }
+        console.log(this.drawCardScoreValues);
+    }
 }
 
 
@@ -39,7 +53,7 @@ function Node(v = null){
   }
 }
 
-
+//TODO choose random strategy (aggressive use of knights/ defensive use of knights, taking many cards, only taking the necessary cards etc.)
 
 function AI(player,oponent,depth){
 //FIXME the function that determines the value of a played card
@@ -51,7 +65,7 @@ function AI(player,oponent,depth){
   this.depth = depth
   this.treeNode = new Node()
   this.notAbleToPlayPenalty = -50
-  this.dna = new Dna(-32,0, 0.01, 0, 2, 0.99, 0, 0)
+  this.dna = new Dna(-50,0, 0.01, 0, 2, 0.99, 0, 0)
   //this.knightPenalty = this.dna.playKnightScore()//-16//Low, constant penalties (-9) lead to an early waste of knights, leading to a lead for the AI, then the player.
                          //penalty should probably increase as the ai has less knights available
   //this.drawCardScore = this.dna.drawCardScore()//2

@@ -269,8 +269,8 @@ FIXME load scripts async, but I'll have to wait for all, before the main is able
     // FIXME use something like this to update the colors of the game: if (location.hash === "#irgendeinCoolesFeature") {}
     var clrShmeSelected = window.location.hash.split("c=")
     clrShmeSelected = clrShmeSelected[clrShmeSelected.length-1]
-    if(clrShmeSelected == ""){window.location.hash = "c=default"; clrShmeSelected = "default";}
     var clrShme = colorSchemeDict[clrShmeSelected.toLowerCase()]
+    if(clrShme === undefined){window.location.hash = "c=default"; clrShme = colorSchemeDict["default"];}
 
     var player1 = new Player(clrShme.player1color1,clrShme.player1color2 , "Player1", window.againstAi, player1FieldCtx, player1KnightsCtx, player1PointsCtx)
     var player2 = new Player(clrShme.player2color1,clrShme.player2color2 , "Player2", false, player2FieldCtx, player2KnightsCtx, player2PointsCtx)
@@ -316,7 +316,7 @@ FIXME load scripts async, but I'll have to wait for all, before the main is able
 
     var gameEnded = false
 
-    function changeActivePlayer(){//FIMXE Need ai vs ai mode for dna training, Human vs Human and Ai vs Ai
+    function changeActivePlayer(){//FIMXE Need ai vs ai mode for dna training, Human vs Human and Ai vs Hooman
         //Maybe do a function for all o them.
         // Or even a "Class"(-function).
         if(gameEnded){return}
