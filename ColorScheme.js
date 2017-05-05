@@ -56,12 +56,12 @@ function NeonColorScheme(){
     this.player1color1     =    'rgb(191,0,100)'
     this.player2color2     =    'rgb(191,0,100)'
     this.player2color1     =    'rgb(0, 191, 0)'
-    this.neutralColor      =    'rgba(100,100,255,0.8)'
+    this.neutralColor      =    'rgba(0,100,191,0.8)'
     this.backgroundImage   =    'mandalaSpaceyBlur.jpg'
     this.backgroundColor   =    'rgba(0,0,0,0.0)'
     this.fieldColor        =    'rgba(255,255,255,0.3)'
     this.fieldBorderColor  =    'rgba(100,100,155,0.4)'//'rgb(20, 120, 150)'
-    this.crownColor        =    'rgba(100,100,255,1)'//'rgb(20, 120, 150)'
+    this.crownColor        =    'rgba(0,100,191,1)'//'rgb(20, 120, 150)'
 }   
 
 
