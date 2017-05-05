@@ -24,8 +24,7 @@ class Matrix {
                     if(j === i){this.matrixArray[i][j] = 1}
                 }
             }
-        
-    }
+        }
     
     
     get(i,j){return this.matrixArray[i][j]}
@@ -44,15 +43,23 @@ class Matrix {
     }
 
     //Addition
-    static addable(a,b){return true}
+    static addable(a,b){return a.m == b.m && a.n == b.n}
+    
     addable(b){Matrix.addable(this,b)}
+    
     static add(a,b, actuallyIsSubtraction = false){//actuallyIsSubtraction is used to save much code-repetition, but makes the actual calculation slower.
-        if(actuallyIsSubtraction){
-            
+        if(!this.addable(a,b)){return undefined}
+        var p = actuallyIsSubtraction? -1 : 1//p is either 1 or -1 now, depending on acutallyIsSubtraction (btw I LOVE weak typing!)
+        m = new Matrix(a.m, a.n)
+        for (var i = 0; i < a.m; i++) {
+            for (var j = 0; j < a.n; j++) {
+                m.set(i,j,a.get(i,j)+p*b.get(i,j))
+            }
         }
-        
+        return m
     }
-    add(b){Matrix.add(this, b)}
+    
+    add(b){this.matrixArray = Matrix.add(this, b).matrixArray; return this;}
     
     //Subtraction
     static sub(a,b){Matrix.add(a,b,true)}
