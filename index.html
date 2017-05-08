@@ -323,7 +323,7 @@ FIXME load scripts async, but I'll have to wait for all, before the main is able
 
         //var ai1 = new AI(player2,player1,3)
         player1.isAi = window.againstAi//dynamically update.
-        
+
         if(window.againstAi){
             var ai2 = new AI(player1,player2,3)
         }
@@ -369,7 +369,9 @@ FIXME load scripts async, but I'll have to wait for all, before the main is able
             else{
                 board.myDisplay()
                 lastPlayerWasAbleToPlay = false
-                changeActivePlayer()
+                    setTimeout(function(){
+                    changeActivePlayer()
+                }, window.TURNTIME*2)
             }
         }
         if(state == "hasToPlayKnight"){//FIXME Give visual clues to these states by defocusing/overlaying/transparancy of cards.
