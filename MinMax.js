@@ -31,7 +31,7 @@ this.mutate = function(){
         for (var i = 0; i < this.playKnightScoreValues.length; i++, c++) {
             this.playKnightScoreValues[i] += Math.random()*this.maxMutation[c]-Math.random()*this.maxMutation[c]
         }
-        
+
         for (var i = 0; i < this.drawCardScoreValues.length; i++, c++) {//continue with the c
             this.drawCardScoreValues[i] += Math.random()*this.maxMutation[c]-Math.random()*this.maxMutation[c]
         }
@@ -65,7 +65,7 @@ function AI(player,oponent,depth){
   this.depth = depth
   this.treeNode = new Node()
   this.notAbleToPlayPenalty = -50
-  this.dna = new Dna(-50,0, 0.01, 0, 2, 0, 0, 0)
+  this.dna = new Dna(-50,0, 0.008, 0, 2, 0, 0, 0)
   //this.knightPenalty = this.dna.playKnightScore()//-16//Low, constant penalties (-9) lead to an early waste of knights, leading to a lead for the AI, then the player.
                          //penalty should probably increase as the ai has less knights available
   //this.drawCardScore = this.dna.drawCardScore()//2
