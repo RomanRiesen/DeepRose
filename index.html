@@ -118,8 +118,8 @@ FIXME load scripts async, but I'll have to wait for all, before the main is able
         dialogBoxActive = true
         var dB = document.createElement("div")
         dB.setAttribute("id","dialogBox")
-        dB.setAttribute("style","position:fixed;top:43%;bottom:bottom:43%;left:30%;right:30%;font-size:36px;color:"+activePlayer.color2+";background-color:"+/*activePlayer.color*/neutralColor+";border-style: solid;border-color:"+activePlayer.color2)
-        dB.innerHTML = msg+"<br><button style = \"background-color:"+activePlayer.color2+";color:"+activePlayer.color+"\">Ok.</button>"
+        dB.setAttribute("style","position:fixed;top:38%;bottom:bottom:36%;left:30%;right:30%;font-size:36px;color:"+activePlayer.color2+";background-color:"+/*activePlayer.color*/neutralColor+";border-style: solid;border-color:"+activePlayer.color2)
+        dB.innerHTML = msg//+"<br><button style = \"background-color:"+activePlayer.color2+";color:"+activePlayer.color+"\">Ok.</button>"
         document.body.appendChild(dB)
         dB.addEventListener('mousedown',function(event){dB.parentNode.removeChild(dB); dialogBoxActive = false;callback()})
     }
@@ -335,7 +335,7 @@ FIXME load scripts async, but I'll have to wait for all, before the main is able
 
         if(board.remainingStones <= 0){//clearInterval(interval)
             console.log("The game has ended! by lack of stones to play\nin turn:", Math.floor(turn/2))
-            finishGame()
+            finishGame("(there aren't any stones left)")
         }
 
         var obj = activePlayer.checkPossibleMoves(board,deck)//FIXME DETAIL: find good name for this object, update Player.js to use the better name.
@@ -361,7 +361,7 @@ FIXME load scripts async, but I'll have to wait for all, before the main is able
                 console.log("Game should have ended");
                 if(unableToPlaySince > 2){
                     board.myDisplay()
-                    finishGame()
+                    finishGame("Because there are no possible turns left.")
                 }
                 unableToPlaySince++
                 changeActivePlayer()
@@ -406,13 +406,9 @@ FIXME load scripts async, but I'll have to wait for all, before the main is able
         }
     }
 
-    function finishGame(){
+    function finishGame(additionalInfo = ""){
 
         var string = ""
-
-        if(board.remainingStones < 1){
-            string += "There aren't any stones left.<br>"
-        }
 
         var p1Score = player1.countScore(board, deck)
         var p2Score = player2.countScore(board, deck)
@@ -427,10 +423,10 @@ FIXME load scripts async, but I'll have to wait for all, before the main is able
         if(activePlayer.isAi){
             name = "The computer "
         } else if (window.againstAi) {
-            name  = "you "
+            name  = "You "
         }
 
-        string += name+" won!"
+        string += "<br>"+name+" won!<div style = \"font-size: 12pt;\"><br>"+additionalInfo+"</div><br>"
 
 
         //console.log("Game has ended")
