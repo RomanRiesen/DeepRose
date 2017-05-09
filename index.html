@@ -272,6 +272,17 @@ FIXME load scripts async, but I'll have to wait for all, before the main is able
     var clrShme = colorSchemeDict[clrShmeSelected.toLowerCase()]
     if(clrShme === undefined){window.location.hash = "c=default"; clrShme = colorSchemeDict["default"];}
 
+
+    //set everything to the background Color
+    var style=document.createElement('style');
+    style.type='text/css';
+    if(style.styleSheet){
+        style.styleSheet.cssText='*{background-color: '+clrShme.backgroundColor+'}';
+    }else{
+        style.appendChild(document.createTextNode('*{background-color: '+clrShme.backgroundColor+'}'));
+    }
+    document.getElementsByTagName('head')[0].appendChild(style);
+
     var player1 = new Player(clrShme.player1color1,clrShme.player1color2 , "Player1", window.againstAi, player1FieldCtx, player1KnightsCtx, player1PointsCtx)
     var player2 = new Player(clrShme.player2color1,clrShme.player2color2 , "Player2", false, player2FieldCtx, player2KnightsCtx, player2PointsCtx)
     var neutralColor = clrShme.neutralColor
@@ -535,7 +546,7 @@ FIXME load scripts async, but I'll have to wait for all, before the main is able
             tempAlert("Use of knight deselected")
             return
         }//FIXME TODO FIXME ACUTUALLY IMPORTANT READ AND DO THIS !!! add a visual indication when useKnight is true
-        tempAlert("Click the card to be used with the knight (covering a part of the board...",/* is a stupid idea for telling somebody to make a game decision based on the state of named board. With this text added it is probably the full board. LOL.)",*/2000)
+        tempAlert("Click the card to be used with the knight.",/* (covering a part of the board...", is a stupid idea for telling somebody to make a game decision based on the state of named board. With this text added it is probably the full board. LOL.)",*/2000)
         useKnight = true
     })
 
@@ -553,7 +564,7 @@ FIXME load scripts async, but I'll have to wait for all, before the main is able
             tempAlert("Use of knight deselected")
             return
         }//FIXME TODO FIXME ACUTUALLY IMPORTANT READ AND DO THIS !!! add a visual indication when useKnight is true
-        tempAlert("Click the card to be used with the knight (covering a part of the board...",/* is a stupid idea for telling somebody to make a game decision based on the state of named board. With this text added it is probably the full board. LOL.)",*/2000)
+        tempAlert("Click the card to be used with the knight.",/* (covering a part of the board...", is a stupid idea for telling somebody to make a game decision based on the state of named board. With this text added it is probably the full board. LOL.)",*/2000)
         useKnight = true
 
     })
