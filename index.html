@@ -325,7 +325,7 @@ FIXME load scripts async, but I'll have to wait for all, before the main is able
         player1.isAi = window.againstAi//dynamically update.
 
         if(window.againstAi){
-            var ai2 = new AI(player1,player2,3)
+            /*var */ai2 = new AI(player1,player2,3)
         }
 
 
@@ -370,6 +370,7 @@ FIXME load scripts async, but I'll have to wait for all, before the main is able
                 board.myDisplay()
                 lastPlayerWasAbleToPlay = false
                     setTimeout(function(){
+                    board.myDisplay()
                     changeActivePlayer()
                 }, window.TURNTIME*2)
             }
