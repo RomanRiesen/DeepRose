@@ -29,7 +29,7 @@ FIXME load scripts async, but I'll have to wait for all, before the main is able
 <script src="Player.js"></script>
 <script src="Board.js"></script>
 <script src="Polynomials.js"></script>
-<script src="Matrix.js"></script>
+<!--script src="Matrix.js"></script>\-->
 <script src="MinMax.js"></script>
 <script src="SaveAndLoad.js"></script>
 <script src="backgroundTest.js"></script>
@@ -346,7 +346,7 @@ FIXME load scripts async, but I'll have to wait for all, before the main is able
 
         if(board.remainingStones <= 0){//clearInterval(interval)
             console.log("The game has ended! by lack of stones to play\nin turn:", Math.floor(turn/2))
-            finishGame("(there aren't any stones left)")
+            finishGame("(There aren't any stones left)")
         }
 
         var obj = activePlayer.checkPossibleMoves(board,deck)//FIXME DETAIL: find good name for this object, update Player.js to use the better name.
@@ -372,7 +372,7 @@ FIXME load scripts async, but I'll have to wait for all, before the main is able
                 console.log("Game should have ended");
                 if(unableToPlaySince > 2){
                     board.myDisplay()
-                    finishGame("(there are no possible turns left)")
+                    finishGame("There are no possible turns left.")
                 }
                 unableToPlaySince++
                 changeActivePlayer()
