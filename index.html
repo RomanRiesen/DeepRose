@@ -29,9 +29,11 @@ FIXME load scripts async, but I'll have to wait for all, before the main is able
 <script src="Player.js"></script>
 <script src="Board.js"></script>
 <script src="Polynomials.js"></script>
-<script src="MinMax.js"></script>
+<!--script src="Matrix.js"></script>\-->
+<script src="MinMax.min.js"></script>
 <script src="SaveAndLoad.js"></script>
 <script src="backgroundTest.js"></script>
+<script src="ColorScheme.js"></script>
 <script src="ColorScheme.js"></script>
 
 <link rel="stylesheet" type="text/css" href="style.css">
@@ -61,7 +63,7 @@ FIXME load scripts async, but I'll have to wait for all, before the main is able
             <td style="">
                 <canvas id="leftPanel" class = "left" width="100" height="600"></canvas>
             </td>
-            <td style="width:4%; text-align: center;">
+            <td style="width:4%; text-align: center; position: relative;" id = "BoardTableElement">
                 <canvas id="BoardCanvas" class = "centerHor" width="600" height="600" >
                     Your browser does not support the HTML5 canvas tag.</canvas>
                 </td>
@@ -102,13 +104,13 @@ FIXME load scripts async, but I'll have to wait for all, before the main is able
     {
         var el = document.createElement("div")
         // el.setAttribute("style","position:absolute;top:47%;left:30%;right:30%;font-size:36px;border-radius:5px;border-style:solid;border-width:5px;border-color:"+activePlayer.color2+";color:"+activePlayer.color2+";background-color:"+activePlayer.color)
-        el.setAttribute("style","position:fixed;top:48%;bottom:bottom:48%;left:30%;right:30%;font-size:36px;color:"+activePlayer.color2+";background-color:"+/*activePlayer.color*/neutralColor+";border-style: solid;border-color:"+activePlayer.color2)
+        el.setAttribute("style","width: 80%; position:absolute; text-align: center; font-size: 32; top: 50%; right: 50%; transform: translate(50%,-50%); color:"+activePlayer.color2+";border:2px;background-color:"+activePlayer.color +";border-style:solid;border-color:"+activePlayer.color2)
         //el.setAttribute("style","width:100%;color:white;background-color:"+activePlayer.color)
         el.innerHTML = msg
         setTimeout(function(){
             el.parentNode.removeChild(el)
         },duration)
-        document.body.appendChild(el)
+        document.getElementById("BoardTableElement").appendChild(el)
     }
 
     function dialogBox(msg,callback = function(){})//FIXME replace text if div still exists
@@ -116,9 +118,9 @@ FIXME load scripts async, but I'll have to wait for all, before the main is able
         dialogBoxActive = true
         var dB = document.createElement("div")
         dB.setAttribute("id","dialogBox")
-        dB.setAttribute("style","position:fixed;top:43%;bottom:bottom:43%;left:30%;right:30%;font-size:36px;color:"+activePlayer.color2+";background-color:"+/*activePlayer.color*/neutralColor+";border-style: solid;border-color:"+activePlayer.color2)
-        dB.innerHTML = msg+"<br><button style = \"background-color:"+activePlayer.color2+";color:"+activePlayer.color+"\">Ok.</button>"
-        document.body.appendChild(dB)
+        dB.setAttribute("style","width: 80%; position:absolute; text-align: center; font-size: 32; top: 50%; right: 50%; transform: translate(50%,-50%); color:"+activePlayer.color2+";border:2px;background-color:"+activePlayer.color+";border-style:solid;border-color:"+activePlayer.color2)
+        dB.innerHTML = msg//+"<br><button style = \"background-color:"+activePlayer.color2+";color:"+activePlayer.color+"\">Ok.</button>"
+        document.getElementById("BoardTableElement").appendChild(dB)
         dB.addEventListener('mousedown',function(event){dB.parentNode.removeChild(dB); dialogBoxActive = false;callback()})
     }
 
@@ -143,12 +145,12 @@ FIXME load scripts async, but I'll have to wait for all, before the main is able
         var dB = document.createElement("div")
         dB.setAttribute("id","dialogBox")
         //FIXME probably should have a global dialog box style.
-        dB.setAttribute("style","text-align: center; position:fixed;top:40%;bottom:bottom:39%;left:30%;right:30%;font-size:0px;color:"+/*activePlayer.color2*/neutralColor+";border:2px;background-color:"+neutralColor/*activePlayer.color*/+";border-style:solid;border-color:"+activePlayer.color2)
+        dB.setAttribute("style","width: 80%; position:absolute; text-align: center; font-size: 0; top: 50%; right: 50%; transform: translate(50%,-50%); color:"+/*activePlayer.color2*/neutralColor+";border:2px;background-color:"+neutralColor/*activePlayer.color*/+";border-style:solid;border-color:"+activePlayer.color2)
         //dB.innerHTML = "~~ Ai or not? ~ ~"
         dB.innerHTML = "<br><button id=\"againstAi\"    style = \"background-color:"+inactivePlayer.color2+";color:"+inactivePlayer.color +";\">Against Ai</button>"
         dB.innerHTML += "<br><button id=\"playersOnly\" style = \"background-color:"+activePlayer.color2  +";color:"+activePlayer.color   +";\">2 Player</button>"
         createThemeSelector(dB)
-        document.body.appendChild(dB)
+        document.getElementById("BoardTableElement").appendChild(dB)
 
         var pve = document.getElementById("againstAi")
         var pvp = document.getElementById("playersOnly")
@@ -156,7 +158,7 @@ FIXME load scripts async, but I'll have to wait for all, before the main is able
         pve.onclick = function(){setAi(true)}
         pvp.onclick = function(){setAi(false)}
 
-        var style = "width: 40%;"
+        var style = "width: 60%;"
         pve.setAttribute("style", pve.getAttribute("style")+style)
         pvp.setAttribute("style", pvp.getAttribute("style")+style)
         cols.setAttribute("style", pve.getAttribute("style")+style)
@@ -195,13 +197,11 @@ FIXME load scripts async, but I'll have to wait for all, before the main is able
     <script>
     //FIXME function onwindowresize adjustElement(ctx, width, height){} and use the proper sizes, as in the link in the mail that I sent to myself (from mcs to gmx mail)
 
-
-
     var partitions = 7//In how many parts the display is split (cards will have a height of 1 part)
     var totHeight = window.innerHeight
     var totWidth = window.innerWidth
     var yUnit = (totHeight)/partitions
-    var xUnit = (totWidth-12)/partitions
+    var xUnit = (totWidth-20)/partitions
     //setting all the canvas sizes. Yey. Responsive!
     document.getElementById("BoardCanvas").width = Math.min((partitions-2)*xUnit, (partitions-2)*yUnit)//6*xUnit
     document.getElementById("BoardCanvas").height = Math.min((partitions-2)*xUnit, (partitions-2)*yUnit)//6*yUnit
@@ -269,8 +269,19 @@ FIXME load scripts async, but I'll have to wait for all, before the main is able
     // FIXME use something like this to update the colors of the game: if (location.hash === "#irgendeinCoolesFeature") {}
     var clrShmeSelected = window.location.hash.split("c=")
     clrShmeSelected = clrShmeSelected[clrShmeSelected.length-1]
-    if(clrShmeSelected == ""){window.location.hash = "c=default"; clrShmeSelected = "default";}
     var clrShme = colorSchemeDict[clrShmeSelected.toLowerCase()]
+    if(clrShme === undefined){window.location.hash = "c=default"; clrShme = colorSchemeDict["default"];}
+
+
+    //set everything to the background Color
+    var style=document.createElement('style');
+    style.type='text/css';
+    if(style.styleSheet){
+        style.styleSheet.cssText='*{background-color: '+clrShme.backgroundColor+'}';
+    }else{
+        style.appendChild(document.createTextNode('*{background-color: '+clrShme.backgroundColor+'}'));
+    }
+    document.getElementsByTagName('head')[0].appendChild(style);
 
     var player1 = new Player(clrShme.player1color1,clrShme.player1color2 , "Player1", window.againstAi, player1FieldCtx, player1KnightsCtx, player1PointsCtx)
     var player2 = new Player(clrShme.player2color1,clrShme.player2color2 , "Player2", false, player2FieldCtx, player2KnightsCtx, player2PointsCtx)
@@ -316,17 +327,18 @@ FIXME load scripts async, but I'll have to wait for all, before the main is able
 
     var gameEnded = false
 
-    function changeActivePlayer(){//FIMXE Need ai vs ai mode for dna training, Human vs Human and Ai vs Ai
+    function changeActivePlayer(){//FIMXE Need ai vs ai mode for dna training, Human vs Human and Ai vs Hooman
         //Maybe do a function for all o them.
         // Or even a "Class"(-function).
         if(gameEnded){return}
 
         //var ai1 = new AI(player2,player1,3)
+        player1.isAi = window.againstAi//dynamically update.
+
         if(window.againstAi){
-            var ai2 = new AI(player1,player2,3)
+            /*var */ai2 = new AI(player1,player2,3)
         }
 
-        player1.isAi = window.againstAi//dynamically update.
 
 
         activePlayer = activePlayer == player1? player2 : player1
@@ -334,7 +346,7 @@ FIXME load scripts async, but I'll have to wait for all, before the main is able
 
         if(board.remainingStones <= 0){//clearInterval(interval)
             console.log("The game has ended! by lack of stones to play\nin turn:", Math.floor(turn/2))
-            finishGame()
+            finishGame("(There aren't any stones left)")
         }
 
         var obj = activePlayer.checkPossibleMoves(board,deck)//FIXME DETAIL: find good name for this object, update Player.js to use the better name.
@@ -360,7 +372,7 @@ FIXME load scripts async, but I'll have to wait for all, before the main is able
                 console.log("Game should have ended");
                 if(unableToPlaySince > 2){
                     board.myDisplay()
-                    finishGame()
+                    finishGame("There are no possible turns left.")
                 }
                 unableToPlaySince++
                 changeActivePlayer()
@@ -368,7 +380,10 @@ FIXME load scripts async, but I'll have to wait for all, before the main is able
             else{
                 board.myDisplay()
                 lastPlayerWasAbleToPlay = false
-                changeActivePlayer()
+                    setTimeout(function(){
+                    board.myDisplay()
+                    changeActivePlayer()
+                }, window.TURNTIME*2)
             }
         }
         if(state == "hasToPlayKnight"){//FIXME Give visual clues to these states by defocusing/overlaying/transparancy of cards.
@@ -402,13 +417,9 @@ FIXME load scripts async, but I'll have to wait for all, before the main is able
         }
     }
 
-    function finishGame(){
+    function finishGame(additionalInfo = ""){
 
         var string = ""
-
-        if(board.remainingStones < 1){
-            string += "There aren't any stones left.<br>"
-        }
 
         var p1Score = player1.countScore(board, deck)
         var p2Score = player2.countScore(board, deck)
@@ -423,10 +434,10 @@ FIXME load scripts async, but I'll have to wait for all, before the main is able
         if(activePlayer.isAi){
             name = "The computer "
         } else if (window.againstAi) {
-            name  = "you "
+            name  = "You "
         }
 
-        string += name+" won!"
+        string += "<br>"+name+" won!<div style = \"font-size: 12pt;\"><br>"+additionalInfo+"</div><br>"
 
 
         //console.log("Game has ended")
@@ -535,7 +546,7 @@ FIXME load scripts async, but I'll have to wait for all, before the main is able
             tempAlert("Use of knight deselected")
             return
         }//FIXME TODO FIXME ACUTUALLY IMPORTANT READ AND DO THIS !!! add a visual indication when useKnight is true
-        tempAlert("Click the card to be used with the knight (covering a part of the board...",/* is a stupid idea for telling somebody to make a game decision based on the state of named board. With this text added it is probably the full board. LOL.)",*/2000)
+        tempAlert("Click the card to be used with the knight.",/* (covering a part of the board...", is a stupid idea for telling somebody to make a game decision based on the state of named board. With this text added it is probably the full board. LOL.)",*/2000)
         useKnight = true
     })
 
@@ -553,7 +564,7 @@ FIXME load scripts async, but I'll have to wait for all, before the main is able
             tempAlert("Use of knight deselected")
             return
         }//FIXME TODO FIXME ACUTUALLY IMPORTANT READ AND DO THIS !!! add a visual indication when useKnight is true
-        tempAlert("Click the card to be used with the knight (covering a part of the board...",/* is a stupid idea for telling somebody to make a game decision based on the state of named board. With this text added it is probably the full board. LOL.)",*/2000)
+        tempAlert("Click the card to be used with the knight.",/* (covering a part of the board...", is a stupid idea for telling somebody to make a game decision based on the state of named board. With this text added it is probably the full board. LOL.)",*/2000)
         useKnight = true
 
     })
