@@ -15,7 +15,11 @@ function Turn(){
 
 //used to find best parameters for the value of knights, taking cards (and maybe not being able to play)
 <<<<<<< HEAD
+<<<<<<< HEAD
 function Dna(k0, k1, k2, k3, tc0, tc1, tc2, tc3){//FIXME need a better way of implementing dna and mutation and stuff. Need dna factory.
+=======
+function Dna(k0, k1, k2, k3, tc0, tc1, tc2, tc3){
+>>>>>>> dev
 =======
 function Dna(k0, k1, k2, k3, tc0, tc1, tc2, tc3){
 >>>>>>> dev
@@ -70,7 +74,11 @@ function AI(player,oponent,depth){
   this.treeNode = new Node()
   this.notAbleToPlayPenalty = -50
 <<<<<<< HEAD
+<<<<<<< HEAD
   this.dna = new Dna(-55,0, 0.008, 0, 2, 0, 0, 0)
+=======
+  this.dna = new Dna(-32,-1, 0, 0, 2, 0.99, 0, 0)
+>>>>>>> dev
 =======
   this.dna = new Dna(-32,-1, 0, 0, 2, 0.99, 0, 0)
 >>>>>>> dev
