@@ -14,7 +14,7 @@ Many, many, many things are quick and dirty.
 
 Probably not going to clean it up. Since it works as it is (I think at least).
 
- TEST A direction-denial mechanic would be interesting (where each player chooses (and is able to change at any time) a direction, of which no one is allowed to play)
+TEST A direction-denial mechanic would be interesting (where each player chooses (and is able to change at any time) a direction, of which no one is allowed to play)
 
 FIXME FIXME FIXME FIXME font-scaling on mobile is horrible (WAY too small, double it on mobile devices);
 
@@ -148,8 +148,8 @@ FIXME load scripts async, but I'll have to wait for all, before the main is able
         //FIXME probably should have a global dialog box style.
         dB.setAttribute("style","width: 80%; position:absolute; text-align: center; font-size: 0; top: 50%; right: 50%; transform: translate(50%,-50%); color:"+/*activePlayer.color2*/neutralColor+";border:2px;background-color:"+neutralColor/*activePlayer.color*/+";border-style:solid;border-color:"+activePlayer.color2)
         //dB.innerHTML = "~~ Ai or not? ~ ~"
-        dB.innerHTML = "<br><button id=\"againstAi\"    style = \"background-color:"+inactivePlayer.color2+";color:"+inactivePlayer.color +";\">Against Ai</button>"
-        dB.innerHTML += "<br><button id=\"playersOnly\" style = \"background-color:"+activePlayer.color2  +";color:"+activePlayer.color   +";\">2 Player</button>"
+        dB.innerHTML = "<br><button id=\"againstAi\"    style = \"font-size:"+12*window.FONTSCALING+";background-color:"+inactivePlayer.color2+";color:"+inactivePlayer.color +";\">Against Ai</button>"
+        dB.innerHTML += "<br><button id=\"playersOnly\" style = \"font-size:"+12*window.FONTSCALING+";background-color:"+activePlayer.color2  +";color:"+activePlayer.color   +";\">2 Player</button>"
         createThemeSelector(dB)
         document.getElementById("BoardTableElement").appendChild(dB)
 
@@ -191,8 +191,6 @@ FIXME load scripts async, but I'll have to wait for all, before the main is able
         var fieldSizeX = (canvas.clientWidth/player2.cards.length)
         return Math.floor(x/(fieldSizeX))
     }
-
-
     </script>
 
     <script>
@@ -381,7 +379,7 @@ FIXME load scripts async, but I'll have to wait for all, before the main is able
             else{
                 board.myDisplay()
                 lastPlayerWasAbleToPlay = false
-                    setTimeout(function(){
+                setTimeout(function(){
                     board.myDisplay()
                     changeActivePlayer()
                 }, window.TURNTIME*2)
@@ -598,5 +596,5 @@ FIXME load scripts async, but I'll have to wait for all, before the main is able
 
     </script>
 
-    </body>
-    </html>
+</body>
+</html>
