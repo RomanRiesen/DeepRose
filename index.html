@@ -16,6 +16,8 @@ Probably not going to clean it up. Since it works as it is (I think at least).
 
  TEST A direction-denial mechanic would be interesting (where each player chooses (and is able to change at any time) a direction, of which no one is allowed to play)
 
+FIXME FIXME FIXME FIXME font-scaling on mobile is horrible (WAY too small, double it on mobile devices);
+
 TODO a rotation function in 2 player mode, where player1's score and knight count are 180 degrees rotatet and the score 90 degrees antic
 
 FIXME create script to minify all the js, css, html files and put them into a subfolder (minified, which also should be a branch. Then push the branches to git.
@@ -30,10 +32,9 @@ FIXME load scripts async, but I'll have to wait for all, before the main is able
 <script src="Board.min.js"></script>
 <script src="Polynomials.js"></script>
 <!--script src="Matrix.js"></script>\-->
-<script src="MinMax.min.js"></script>
+<script src="MinMax.js"></script>
 <script src="SaveAndLoad.js"></script>
 <script src="backgroundTest.js"></script>
-<script src="ColorScheme.js"></script>
 <script src="ColorScheme.js"></script>
 
 <link rel="stylesheet" type="text/css" href="style.css">
@@ -104,7 +105,7 @@ FIXME load scripts async, but I'll have to wait for all, before the main is able
     {
         var el = document.createElement("div")
         // el.setAttribute("style","position:absolute;top:47%;left:30%;right:30%;font-size:36px;border-radius:5px;border-style:solid;border-width:5px;border-color:"+activePlayer.color2+";color:"+activePlayer.color2+";background-color:"+activePlayer.color)
-        el.setAttribute("style","width: 80%; position:absolute; text-align: center; font-size: 32; top: 50%; right: 50%; transform: translate(50%,-50%); color:"+activePlayer.color2+";border:2px;background-color:"+activePlayer.color +";border-style:solid;border-color:"+activePlayer.color2)
+        el.setAttribute("style","width: 80%; position:absolute; text-align: center; font-size: "+32*window.FONTSCALING+"; top: 50%; right: 50%; transform: translate(50%,-50%); color:"+activePlayer.color2+";border:2px;background-color:"+activePlayer.color +";border-style:solid;border-color:"+activePlayer.color2)
         //el.setAttribute("style","width:100%;color:white;background-color:"+activePlayer.color)
         el.innerHTML = msg
         setTimeout(function(){
@@ -118,7 +119,7 @@ FIXME load scripts async, but I'll have to wait for all, before the main is able
         dialogBoxActive = true
         var dB = document.createElement("div")
         dB.setAttribute("id","dialogBox")
-        dB.setAttribute("style","width: 80%; position:absolute; text-align: center; font-size: 32; top: 50%; right: 50%; transform: translate(50%,-50%); color:"+activePlayer.color2+";border:2px;background-color:"+activePlayer.color+";border-style:solid;border-color:"+activePlayer.color2)
+        dB.setAttribute("style","width: 80%; position:absolute; text-align: center; font-size: "+32*window.FONTSCALING+"; top: 50%; right: 50%; transform: translate(50%,-50%); color:"+activePlayer.color2+";border:2px;background-color:"+activePlayer.color+";border-style:solid;border-color:"+activePlayer.color2)
         dB.innerHTML = msg//+"<br><button style = \"background-color:"+activePlayer.color2+";color:"+activePlayer.color+"\">Ok.</button>"
         document.getElementById("BoardTableElement").appendChild(dB)
         dB.addEventListener('mousedown',function(event){dB.parentNode.removeChild(dB); dialogBoxActive = false;callback()})
@@ -255,7 +256,7 @@ FIXME load scripts async, but I'll have to wait for all, before the main is able
     var ctx  = getContextWithSizesAndCanvas("BoardCanvas").ctx
 
     //createBackground()
-
+    window.FONTSCALING = 1920000 / (window.outerWidth * window.innerWidth)
 
     function setup () {}
 
@@ -437,7 +438,7 @@ FIXME load scripts async, but I'll have to wait for all, before the main is able
             name  = "You "
         }
 
-        string += "<br>"+name+" won!<div style = \"font-size: 12pt;\"><br>"+additionalInfo+"</div><br>"
+        string += "<br>"+name+" won!<div style = \"font-size: "+12*window.FONTSCALING+"pt;\"><br>"+additionalInfo+"</div><br>"
 
 
         //console.log("Game has ended")
