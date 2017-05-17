@@ -29,7 +29,7 @@ FIXME load scripts async, but I'll have to wait for all, before the main is able
 <script src="Card.js"></script>
 <script src="Deck.js"></script>
 <script src="Player.js"></script>
-<script src="Board.min.js"></script>
+<script src="Board.js"></script>
 <script src="Polynomials.js"></script>
 <!--script src="Matrix.js"></script>\-->
 <script src="MinMax.js"></script>
@@ -254,7 +254,7 @@ FIXME load scripts async, but I'll have to wait for all, before the main is able
     var ctx  = getContextWithSizesAndCanvas("BoardCanvas").ctx
 
     //createBackground()
-    window.FONTSCALING = 1920000 / (window.outerWidth * window.innerWidth)
+    window.FONTSCALING = Math.min( 1920000 / (window.outerWidth * window.innerWidth), 2)
 
     function setup () {}
 
@@ -309,8 +309,8 @@ FIXME load scripts async, but I'll have to wait for all, before the main is able
     var inactivePlayer = player1
 
     //Now I only have to set the activePlayer to the correct player.
-    board.myDisplay = function(){board.display(ctx,rightPanelCtx,player1,player2,deck,activePlayer)}
-    board.myDisplay()
+    board.setupDisplay(ctx,rightPanelCtx,player1,player2,deck,activePlayer)
+    board.display()
 
     aiOr2PlayerBox()
     //tempAlert(activePlayer.name+" begins!")
@@ -367,20 +367,20 @@ FIXME load scripts async, but I'll have to wait for all, before the main is able
                 //both players are unable to play any cards
                 //thus ends the game.//GAME ENDS TOO EARLY.
                 //finishGame()
-                board.myDisplay()
+                board.display()
                 console.log("Game should have ended");
                 if(unableToPlaySince > 2){
-                    board.myDisplay()
+                    board.display()
                     finishGame("There are no possible turns left.")
                 }
                 unableToPlaySince++
                 changeActivePlayer()
             }
             else{
-                board.myDisplay()
+                board.display()
                 lastPlayerWasAbleToPlay = false
                 setTimeout(function(){
-                    board.myDisplay()
+                    board.display()
                     changeActivePlayer()
                 }, window.TURNTIME*2)
             }
@@ -406,11 +406,11 @@ FIXME load scripts async, but I'll have to wait for all, before the main is able
         //dialogBox("Now it is "+activePlayer.name+"'s turn!")
 
         //TODO FIXME ONLY TEST CODE (As quite the lot in here.)
-        board.myDisplay()
+        board.display()
         if(activePlayer.isAi === true){
             ai2.playBestNextTurn(board, deck)
             setTimeout(function(){
-                board.myDisplay()
+                board.display()
                 changeActivePlayer()
             }, window.TURNTIME)
         }
@@ -442,7 +442,7 @@ FIXME load scripts async, but I'll have to wait for all, before the main is able
         //console.log("Game has ended")
         //dialogBox("THE GAME HAS ENDED<br>AND "+ winner + " WON!")
         dialogBox(string)
-        board.myDisplay()
+        board.display()
         gameEnded = true
     }
 
@@ -454,7 +454,7 @@ FIXME load scripts async, but I'll have to wait for all, before the main is able
     //     ai = ai == ai1 ? ai2 : ai1
     //     ai.playBestNextTurn(board, deck)
     // }
-    // board.myDisplay()
+    // board.display()
 
 
     var currKonamiIndex = 0
@@ -472,7 +472,7 @@ FIXME load scripts async, but I'll have to wait for all, before the main is able
                 window.TURNTIME = 200
                 while(activePlayer.addCard(deck) === true){}
                 console.log("EVIL CHEATER!");
-                board.myDisplay()
+                board.display()
             }
         }
         else{currKonamiIndex = 0}

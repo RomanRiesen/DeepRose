@@ -34,9 +34,17 @@ function Board(boardSize, crownColor, fieldColor, fieldBorderColor,backgroundCol
     }
   }
 
-  this.display = function(boardCtx,stonesCtx,player1,player2,deck,activePlayer){//FIXME build myDisplay function in here instead of index.
-    fillInBackground(boardCtx,this.backgroundColor)
-    fillInBackground(stonesCtx, this.backgroundColor)
+  this.setupDisplay = function(boardCtx,stonesCtx,player1,player2,deck){
+      this.boardCtx    = boardCtx
+      this.stonesCtx   = stonesCtx
+      this.player1     = player1
+      this.player2     = player2
+      this.deck        = deck
+  }
+
+  this.display = function(activePlayer = this.player1){//FIXME build myDisplay function in here instead of index.
+    fillInBackground(this.boardCtx,this.backgroundColor)
+    fillInBackground(this.stonesCtx, this.backgroundColor)
     fillInBackground(deck.deckCanvasCtx, this.backgroundColor)
     fillInBackground(player1.cardCanvasContext,this.backgroundColor)
     fillInBackground(player2.cardCanvasContext,this.backgroundColor)
@@ -46,20 +54,20 @@ function Board(boardSize, crownColor, fieldColor, fieldBorderColor,backgroundCol
     fillInBackground(player2.pointsCanvasContext,this.backgroundColor)
 
     //console.log(this.calculateStoneGridSize(stonesCtx));
-    this.stonesObj = this.calculateStoneGridSize(stonesCtx)
+    this.stonesObj = this.calculateStoneGridSize(this.stonesCtx)
 
     for (var x = 0; x < this.size; x++){
       for (var y = 0; y < this.size; y++){
-        this.displayAt(boardCtx,x,y,this.fields[x][y].owner)
+        this.displayAt(this.boardCtx,x,y,this.fields[x][y].owner)
       }
     }
-    this.displayCrown(boardCtx)
-    this.displayStones(stonesCtx, activePlayer)
+    this.displayCrown(this.boardCtx)
+    this.displayStones(this.stonesCtx, activePlayer)
     player1.displayHand(80)
     player2.displayHand(80)
-    player1.displayPoints(board,deck)
-    player2.displayPoints(board,deck)
-    deck.displayCardStack(activePlayer, player1.cardWidth, player1.cardHeight)
+    player1.displayPoints(board,this.deck)
+    player2.displayPoints(board,this.deck)
+    deck.displayCardStack(activePlayer, this.player1.cardWidth, this.player1.cardHeight)
   }
 
   this.displayStones = function(stonesCtx, activePlayer, stroke = true){

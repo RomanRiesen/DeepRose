@@ -219,7 +219,8 @@ function Player(color, color2, name, isAi, canvasContext, knightCanvasContext, p
                     //plays changes the board and deck according to turn.
                     if(turn.hasToPass === true){return}
                     if(turn.tookCard  === true){this.addCard(deck);return}
-                    this.playCard(turn.cardIndex, board, deck, turn.playKnight);return
+                    this.playCard(turn.cardIndex, board, deck, turn.playKnight)
+                    return
                 }
 
                 this.checkPossibleMoves = function(board,deck){//FIXME use the state object defined in the top part of this file to set the state of the player. might be easier to deal with than all those strings and if cases.
