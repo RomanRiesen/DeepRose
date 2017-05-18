@@ -42,7 +42,7 @@ function Board(boardSize, crownColor, fieldColor, fieldBorderColor,backgroundCol
       this.deck        = deck
   }
 
-  this.display = function(activePlayer = this.player1){//FIXME build myDisplay function in here instead of index.
+  this.display = function(activePlayer){//FIXME build myDisplay function in here instead of index.
     fillInBackground(this.boardCtx,this.backgroundColor)
     fillInBackground(this.stonesCtx, this.backgroundColor)
     fillInBackground(deck.deckCanvasCtx, this.backgroundColor)
