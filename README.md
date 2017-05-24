@@ -11,6 +11,7 @@ Implemented are:
 * Taking random turns
 * MinMax
 * Evolutionary learning of MinMax params
+
 Planned / partially implemented are:
 - Alpha-beta prunning for the MinMax search
 - Some sort of reinforcement learning
