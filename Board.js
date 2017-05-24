@@ -81,13 +81,10 @@ function Board(boardSize, crownColor, fieldColor, fieldBorderColor,backgroundCol
       var hr = Math.floor(0.5*radius)+1
       var hh = Math.floor(stonesCtx.height/2)
       var hw = Math.floor(stonesCtx.width/2)
-      //   for (var i = -hw+radius; i < hw-radius; i+= distance) {
-      //       for (var j = -hh+radius; j < hh-radius; j+= distance) {
       for (var i = obj.r*2; i < obj.nx*obj.dx-obj.r; i+= obj.dx) {
           for (var j = obj.r*2; j < obj.ny*obj.dy-obj.r; j+= obj.dy) {
               if(n < this.remainingStones){
                 n++
-                //console.log(i,j);
                 stonesCtx.beginPath()
                 stonesCtx.fillStyle = activePlayer.color
                 stonesCtx.arc(i,j,obj.r-minD,0,2*Math.PI)

@@ -246,7 +246,7 @@ this.createStrategyTree = function(board, deck, player = this.player, oponent = 
     if (turns === undefined){
         node = startNode
     }
-    var turns = this.listAllTurns(board, deck, this.player, this.oponent)
+    var turns = this.listAllTurns(board, deck, player, oponent)
     for (var i = 0; i < turns.length; i++) {
         board2      = board.copy()
         deck2       = deck.copy()
@@ -255,7 +255,6 @@ this.createStrategyTree = function(board, deck, player = this.player, oponent = 
         //for all the turns call listAllTurns with the new node and an inversion of player and oponent
         //Play turn by player so the board and deck change.
         this.player.playTurn(turns[i], board2, deck2)
-        console.log(player.cards[0] == player2.cards[0])
         var n = this.createStrategyTree(board2, deck2, oponent2, player2, node.addChild(turns[i]), depth, currDepth+1, startNode, turns)
         console.log(n.value)
     }
