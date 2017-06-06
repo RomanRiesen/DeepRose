@@ -238,7 +238,7 @@ function AI(player,oponent,depth){
 return(turns)
 }
 
-this.createStrategyTree = function(board, deck, player = this.player, oponent = this.oponent, node = new Node(null), depth = 10, currDepth = 0, startNode = new Node(null), turns){
+this.createStrategyTree = function(board, deck, player = this.player, oponent = this.oponent, node = new Node(null), depth = 5, currDepth = 0, startNode = new Node(null), turns){
     //Create and return a Tree out of nodes
     if(depth == currDepth){
         return node
