@@ -7,7 +7,6 @@
   </head>
   <body>
     <canvas id = "background" width = "1000" height = "1000"></canvas>
- -->
 
     <script>
     /* accepts parameters
@@ -44,9 +43,9 @@ function HSVtoRGB(h, s, v) {
     var canvas = document.getElementById("background")
     var ctx = canvas.getContext("2d")
 
-    ctx.globalCompositeOperation = "xor"
+    //ctx.globalCompositeOperation = "xor"
 
-    ctx.filter = "blur(10px)"
+    //ctx.filter = "blur(10px)"
 
     var width = canvas.width
     var height = canvas.height
@@ -84,6 +83,7 @@ function HSVtoRGB(h, s, v) {
 
         for(var i = 0; i < maxConcRings; i++){
             ctx.beginPath()
+            ctx.lineWidth = 2
             var h = Math.floor(Math.random()*255)
             var s = 0.6//Math.floor(Math.random()*255)
             var v = 0.9//Math.floor(Math.random()*255)
