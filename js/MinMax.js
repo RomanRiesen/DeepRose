@@ -65,7 +65,7 @@ function AI(player,oponent,depth){
     this.depth = depth
     this.treeNode = new Node()
     this.notAbleToPlayPenalty = -50
-    this.dna = new Dna(-55,0, 0.008, 0, 2, 0, 0, 0)
+    this.dna = new Dna(-25,0, -0.12, 0, 2, 0, 0, 0)
     //this.knightPenalty = this.dna.playKnightScore()//-16//Low, constant penalties (-9) lead to an early waste of knights, leading to a lead for the AI, then the player.
     //penalty should probably increase as the ai has less knights available
     //this.drawCardScore = this.dna.drawCardScore()//2
@@ -238,7 +238,7 @@ function AI(player,oponent,depth){
 return(turns)
 }
 
-this.createStrategyTree = function(board, deck, player = this.player, oponent = this.oponent, node = new Node(null), depth = 5, currDepth = 0, startNode = new Node(null), turns){
+this.createStrategyTree = function(board, deck, player = this.player, oponent = this.oponent, node = new Node(null), depth = 3, currDepth = 0, startNode = new Node(null), turns){
     //Create and return a Tree out of nodes
     if(depth == currDepth){
         return node
@@ -246,6 +246,7 @@ this.createStrategyTree = function(board, deck, player = this.player, oponent = 
     if (turns === undefined){
         node = startNode
     }
+
     var turns = this.listAllTurns(board, deck, player, oponent)
     for (var i = 0; i < turns.length; i++) {
         board2      = board.copy()
@@ -263,7 +264,7 @@ this.createStrategyTree = function(board, deck, player = this.player, oponent = 
 
 this.findBestPathInTree = function(tree){}
 
-
+//FIXME shoudl probably create a tree class.
 this.calculateBestTurnViaTree = function(baord, deck, depth){
     this.createStrategyTree(board, deck, this.player, this.oponent, node = new Node(null), depth = 1)//FIXME WRONG order of parameters
     return best}

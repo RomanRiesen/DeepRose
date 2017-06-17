@@ -20,6 +20,8 @@ FIXME FIXME FIXME FIXME font-scaling on mobile is horrible (WAY too small, doubl
 
 TODO a rotation function in 2 player mode, where player1's score and knight count are 180 degrees rotatet and the score 90 degrees antic
 
+TODO display the played card in the middle of the field for a while. Or somewhere less obnoxious...
+
 FIXME create script to minify all the js, css, html files and put them into a subfolder (minified, which also should be a branch. Then push the branches to git.
 
 FIXME load scripts async, but I'll have to wait for all, before the main is able to execute, which should be moved into its own file!!!
@@ -31,7 +33,7 @@ FIXME load scripts async, but I'll have to wait for all, before the main is able
 <script src="js/Player.js"></script>
 <script src="js/Board.js"></script>
 <script src="js/Polynomials.js"></script>
-<!--script src="js/Matrix.js"></script>\-->
+<script src="js/Matrix.js"></script>
 <script src="js/MinMax.js"></script>
 <script src="js/SaveAndLoad.js"></script>
 <script src="js/backgroundTest.js"></script>
@@ -196,40 +198,57 @@ FIXME load scripts async, but I'll have to wait for all, before the main is able
     <script>
     //FIXME function onwindowresize adjustElement(ctx, width, height){} and use the proper sizes, as in the link in the mail that I sent to myself (from mcs to gmx mail)
 
-    var partitions = 7//In how many parts the display is split (cards will have a height of 1 part)
-    var totHeight = window.innerHeight
-    var totWidth = window.innerWidth
-    var yUnit = (totHeight)/partitions
-    var xUnit = (totWidth-20)/partitions
-    //setting all the canvas sizes. Yey. Responsive!
-    document.getElementById("BoardCanvas").width = Math.min((partitions-2)*xUnit, (partitions-2)*yUnit)//6*xUnit
-    document.getElementById("BoardCanvas").height = Math.min((partitions-2)*xUnit, (partitions-2)*yUnit)//6*yUnit
+    function setupFieldSizes(){
 
-    document.getElementById("player1Canvas").width = Math.min((partitions-2)*xUnit, (partitions-2)*yUnit)
-    document.getElementById("player1Canvas").height = yUnit
+        var partitions = 7//In how many parts the display is split (cards will have a height of 1 part)
+        var totHeight = window.innerHeight
+        var totWidth = window.innerWidth
+        var yUnit = (totHeight)/partitions
+        var xUnit = (totWidth-20)/partitions
+        var c = undefined
+        getBigSquareSize = () => {return Math.min((partitions-2)*xUnit, (partitions-2)*yUnit)}//6*xUnit or 6*yUnit
+        //setting all the canvas sizes.
+        c = document.getElementById("BoardCanvas")
+        c.width = getBigSquareSize()
+        c.height = getBigSquareSize()
 
-    document.getElementById("player2Canvas").width = Math.min((partitions-2)*xUnit, (partitions-2)*yUnit)
-    document.getElementById("player2Canvas").height = yUnit
+        c = document.getElementById("player1Canvas")
+        c.width = getBigSquareSize()
+        c.height = yUnit
 
-    document.getElementById("player1allignmentCanvas").width = xUnit
-    document.getElementById("player1allignmentCanvas").height = yUnit
+        document.getElementById("player2Canvas")
+        c.width = getBigSquareSize()
+        c.height = yUnit
 
-    document.getElementById("player2allignmentCanvas").width =  xUnit
-    document.getElementById("player2allignmentCanvas").height = yUnit
+        c = document.getElementById("player1allignmentCanvas")
+        c.width = xUnit
+        c.height = yUnit
 
-    document.getElementById("player1KnightCanvas").width = xUnit
-    document.getElementById("player1KnightCanvas").height = yUnit
+        c = document.getElementById("player2allignmentCanvas")
+        c.width =  xUnit
+        c.height = yUnit
 
-    document.getElementById("player2KnightCanvas").width = xUnit
-    document.getElementById("player2KnightCanvas").height = yUnit
+        c = document.getElementById("player1KnightCanvas")
+        c.width = xUnit
+        c.height = yUnit
 
-    document.getElementById("leftPanel").width = xUnit
-    document.getElementById("leftPanel").height = (partitions-2)*yUnit
+        c = document.getElementById("player2KnightCanvas")
+        c.width = xUnit
+        c.height = yUnit
 
-    document.getElementById("rightPanel").width = xUnit
-    document.getElementById("rightPanel").height = (partitions-2)*yUnit
+        c = document.getElementById("leftPanel")
+        c.width = xUnit
+        c.height = (partitions-2)*yUnit
 
-    window.LINEWIDTH = (xUnit+yUnit)/150
+        c = document.getElementById("rightPanel")
+        c.width = xUnit
+        c.height = (partitions-2)*yUnit
+
+        window.LINEWIDTH = (xUnit+yUnit)/150
+
+    }
+
+    setupFieldSizes();
 
     window.TURNTIME = 900//Milliseconds of pause between player and ai
 
@@ -593,6 +612,9 @@ FIXME load scripts async, but I'll have to wait for all, before the main is able
             },50)
         }else{tempAlert(msg,2000)}
     })
+
+    //FIXME TODO still broken. somewhere in some display functions values not updated correctly.
+    window.onresize = () => {setupFieldSizes(); board.display(activePlayer)}
 
     </script>
 
