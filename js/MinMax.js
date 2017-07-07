@@ -241,10 +241,10 @@ return(turns)
 this.createStrategyTree = function(board, deck, player = this.player, oponent = this.oponent, node = new Node(null), depth = 3, currDepth = 0, startNode = new Node(null), turns){
     //Create and return a Tree out of nodes
     if(depth == currDepth){
-        return node
+        return startNode
     }
     if (turns === undefined){
-        node = startNode
+        var node = startNode
     }
 
     var turns = this.listAllTurns(board, deck, player, oponent)
@@ -255,16 +255,16 @@ this.createStrategyTree = function(board, deck, player = this.player, oponent = 
         player2     = player.copy()
         //for all the turns call listAllTurns with the new node and an inversion of player and oponent
         //Play turn by player so the board and deck change.
-        this.player.playTurn(turns[i], board2, deck2)
+        player2.playTurn(turns[i], board2, deck2)
         var n = this.createStrategyTree(board2, deck2, oponent2, player2, node.addChild(turns[i]), depth, currDepth+1, startNode, turns)
         console.log(n.value)
     }
-    return startNode
+    return node
 }
 
 this.findBestPathInTree = function(tree){}
 
-//FIXME shoudl probably create a tree class.
+//FIXME should probably create a tree class.
 this.calculateBestTurnViaTree = function(baord, deck, depth){
     this.createStrategyTree(board, deck, this.player, this.oponent, node = new Node(null), depth = 1)//FIXME WRONG order of parameters
     return best}

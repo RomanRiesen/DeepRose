@@ -10,7 +10,6 @@ function State(){//Keeps track of the possible states.
     this.playableWithKnightIndices
     this.playableIndices
     this.canDrawCard
-
 }
 
 

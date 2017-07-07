@@ -68,7 +68,8 @@ function Deck(deckCanvasCtx){
         deckCopy.cards[i] = this.cards[i].copy()
     }
     for (var i = 0; i < this.usedCards.length; i++) {
-        deckCopy.usedCards[i] = this.usedCards[i].copy()
+        if(deckCopy.usedCards[i] === undefined){continue}
+        deckCopy.usedCards[i] = this.usedCards[i].copy()//copy not necessary, since cards are only read from anyways
     }
     //deckCopy.cards = JSON.parse(JSON.stringify(this.cards))
     //deckCopy.usedCards = JSON.parse(JSON.stringify(this.usedCards))

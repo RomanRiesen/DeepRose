@@ -206,18 +206,18 @@ FIXME load scripts async, but I'll have to wait for all, before the main is able
         var yUnit = (totHeight)/partitions
         var xUnit = (totWidth-20)/partitions
         var c = undefined
-        getBigSquareSize = () => {return Math.min((partitions-2)*xUnit, (partitions-2)*yUnit)}//6*xUnit or 6*yUnit
+        bigSquareSize =  Math.min((partitions-2)*xUnit, (partitions-2)*yUnit)//6*xUnit or 6*yUnit
         //setting all the canvas sizes.
         c = document.getElementById("BoardCanvas")
-        c.width = getBigSquareSize()
-        c.height = getBigSquareSize()
+        c.width = bigSquareSize
+        c.height = bigSquareSize
 
         c = document.getElementById("player1Canvas")
-        c.width = getBigSquareSize()
+        c.width = bigSquareSize
         c.height = yUnit
 
-        document.getElementById("player2Canvas")
-        c.width = getBigSquareSize()
+        c = document.getElementById("player2Canvas")
+        c.width = bigSquareSize
         c.height = yUnit
 
         c = document.getElementById("player1allignmentCanvas")
