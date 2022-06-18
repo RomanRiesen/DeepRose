@@ -253,6 +253,11 @@ function Player(color, color2, name, isAi, canvasContext, knightCanvasContext, p
                         if(playCardResult === true){
                             playableIndices.push(i)
                         }
+
+                        console.log(playerCopy.name, "card index: ", i, " : ", playCardResult)
+                        //!!! //FIXME //FIXME //FIXME does not work for computer player
+                        //!!! //FIXME //FIXME //FIXME does not work for computer player
+                        //!!! //FIXME //FIXME //FIXME does not work for computer player
                         if(playCardResult === "This field is occupied by an enemy use a knight to conquer it."){//FIXME TODO !!! FIXME use an object to return the result from player.playCard as well.
                             playableWithKnightIndices.push(i)
                         }

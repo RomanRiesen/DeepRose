@@ -337,7 +337,6 @@ FIXME load scripts async, but I'll have to wait for all, before the main is able
 
     //var gameState = new GameState(board,deck)
     var isAllowedToPlayCard = true
-    var lastPlayerWasAbleToPlay = true
 
     var turn = 0
 
@@ -345,10 +344,39 @@ FIXME load scripts async, but I'll have to wait for all, before the main is able
 
     var gameEnded = false
 
+    function save() {
+        let save_object = [board, deck, player1, player2, useKnight, turn, unableToPlaySince, gameEnded]
+        localStorage.setItem("savegame", JSON.stringify(save_object))
+
+    }
+    
+
+    function load() {
+        [lboard, ldeck, lplayer1, lplayer2, useKnight, turn, unableToPlaySince, gameEnded] = JSON.parse(localStorage.getItem("savegame"))
+        updateObjectWith(board, lboard)
+        let cardmaker = c => c == "NaC" ? "NaC" : new Card(c.direction, c.magnitude);
+        updateObjectWith(deck, ldeck)
+        deck.cards = deck.cards.map(cardmaker)
+        deck.usedCards = deck.usedCards.map(cardmaker)
+        board.deck = deck
+        updateObjectWith(player1, lplayer1)
+        player1.cards = player1.cards.map(cardmaker);
+        updateObjectWith(player2, lplayer2)
+        player2.cards = player2.cards.map(cardmaker);
+        board.player1 = player1
+        board.player2 = player2
+        activePlayer = turn%2 == 0 ? player2 : player1;
+        inactivePlayer = turn%2 == 0 ? player1 : player2;
+        board.crownPosition = lboard.crownPosition
+        board.display(activePlayer)
+        //board.display(player2)
+    }
+
     function changeActivePlayer(){//FIMXE Need ai vs ai mode for dna training, Human vs Human and Ai vs Hooman
         //Maybe do a function for all o them.
         // Or even a "Class"(-function).
         if(gameEnded){return}
+        turn++
 
         //var ai1 = new AI(player2,player1,3)
         player1.isAi = window.againstAi//dynamically update.
@@ -357,10 +385,12 @@ FIXME load scripts async, but I'll have to wait for all, before the main is able
             /*var */ai2 = new AI(player1,player2,3)
         }
 
+        //if (! inactivePlayer.checkPossibleMoves(board, deck).state != "noPossibleTurnLeft") {
+            activePlayer = turn%2 == 0? player2 : player1
+            inactivePlayer = turn%2 == 0? player1 : player2
+        //}
 
-
-        activePlayer = activePlayer == player1? player2 : player1
-        inactivePlayer = activePlayer == player1? player1 : player2
+        let inactivePlayerMayPlay = inactivePlayer.checkPossibleMoves(board, deck).state != "noPossibleTurnLeft";
 
         if(board.remainingStones <= 0){//clearInterval(interval)
             console.log("The game has ended! by lack of stones to play\nin turn:", Math.floor(turn/2))
@@ -374,18 +404,15 @@ FIXME load scripts async, but I'll have to wait for all, before the main is able
         //    "hasToTakeCard"
         //    "hasToTakeCardOrPlayKnight"
         //    "isAbleToPlayNormally"
-        turn++
         var state = obj.state
         var indices = obj.playableIndices
-        //console.log(state,indices,lastPlayerWasAbleToPlay);
         if(state == "noPossibleTurnLeft"){
             //player has full hand cards and is unable to play any of them even with a knight.
             //if(board.gameHasEnded(activePlayer.copy(),inactivePlayer.copy(),deck.copy())){
             tempAlert(activePlayer.name+" is not able to do any move!", 1000)
-            if(inactivePlayer.checkPossibleMoves(board, deck).state == "noPossibleTurnLeft"){
+            if(!inactivePlayerMayPlay){
                 //both players are unable to play any cards
-                //thus ends the game.//GAME ENDS TOO EARLY.
-                //finishGame()
+                //thus ends the game.
                 board.display(activePlayer)
                 console.log("Game should have ended");
                 if(unableToPlaySince > 2){
@@ -393,16 +420,19 @@ FIXME load scripts async, but I'll have to wait for all, before the main is able
                     finishGame("There are no possible turns left.")
                 }
                 unableToPlaySince++
-                changeActivePlayer()
+                //changeActivePlayer()
             }
             else{
                 board.display(activePlayer)
-                lastPlayerWasAbleToPlay = false
-                setTimeout(function(){
-                    board.display(activePlayer)
-                    changeActivePlayer()
-                }, window.TURNTIME*2)
+                console.log("computer plays again because there are no player turns left")
+                //setTimeout(function(){
+                //    board.display(activePlayer)
+                //    changeActivePlayer()
+                //}, window.TURNTIME*2)
             }
+            //FIXME //FIXME computer player plays 1 move too many when real player unable to move
+            changeActivePlayer();
+            return;
         }
         if(state == "hasToPlayKnight"){//FIXME Give visual clues to these states by defocusing/overlaying/transparancy of cards.
             isAllowedToPlayCard = false
@@ -417,8 +447,7 @@ FIXME load scripts async, but I'll have to wait for all, before the main is able
             isAllowedToPlayCard = false
         }
 
-        lastPlayerWasAbleToPlay = true
-        isAllowedToPlayCard = true
+        //isAllowedToPlayCard = true
 
         unableToPlaySince = 0
         //tempAlert("Now it is "+activePlayer.name+"'s turn!")
@@ -523,9 +552,10 @@ FIXME load scripts async, but I'll have to wait for all, before the main is able
     //    "isAbleToPlayNormally"
     document.getElementById("player1Canvas").addEventListener('mousedown',function(event){ // MY EYEEY! AHHH!
         //TODO find a better place for this listener.
+        console.log("player1 canvas click")
         if(activePlayer.isAi){return}
         if(activePlayer != player1){return}
-        if(!isAllowedToPlayCard){return}
+        if(activePlayer.checkPossibleMoves(board, deck) == "noPossibleTurnLeft"){return}
         if(dialogBoxActive){return}
         var canvas = document.getElementById("player1Canvas")//FIXME Detect when game has ended or one player is unable to play, so he has to pass.
         var index = getClickedCardIndex(canvas)
@@ -537,9 +567,10 @@ FIXME load scripts async, but I'll have to wait for all, before the main is able
 
     document.getElementById("player2Canvas").addEventListener('mousedown',function(event){
         //TODO find a better place for this listener.
+        console.log("player2 canvas click")
         if(activePlayer.isAi){return}
-        if(activePlayer != player2){return}
-        if(!isAllowedToPlayCard){return}
+        if(activePlayer.name != player2.name){return}
+        if(activePlayer.checkPossibleMoves(board, deck) == "noPossibleTurnLeft"){return}
         if(dialogBoxActive){return}
         var canvas = document.getElementById("player2Canvas")//!!! FIXME Detect when game has ended or one player is unable to play, so he has to pass.
         var index = getClickedCardIndex(canvas)
