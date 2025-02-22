@@ -1,3 +1,4 @@
+<!doctype html>
 <html>
 
 <!--
@@ -40,173 +41,179 @@ FIXME load scripts async, but I'll have to wait for all, before the main is able
 <script src="js/ColorScheme.js"></script>
 
 <link rel="stylesheet" type="text/css" href="style.css">
-<link rel="ICON"href="DeepRose.png">
+<link rel="ICON" href="DeepRose.png">
 
 <title>Rosenk&ouml;nig</title>
 
-<body style = "width:100%; text-align:center;">
+<body style="width:100%; text-align:center;">
 
 
     <!--<table style="position:absolute;top:18%;bottom:18%;width:100%; text-align: center;">-->
 
-    <table id = "game" style="position:absolute;width:100%;height:100%;text-align: center;">
+    <table id="game" style="position:absolute;width:100%;height:100%;text-align: center;">
         <tr>
             <td>
-                <canvas id="player1allignmentCanvas" class = "left" width="100" height="100"></canvas>
+                <canvas id="player1allignmentCanvas" class="left" width="100" height="100"></canvas>
             </td>
             <td>
-                <canvas id="player1Canvas" class = "centerHor" width="600" height="100"></canvas>
+                <canvas id="player1Canvas" class="centerHor" width="600" height="100"></canvas>
             </td>
             <td>
-                <canvas id="player1KnightCanvas" class = "right" width="100" height="100"></canvas>
+                <canvas id="player1KnightCanvas" class="right" width="100" height="100"></canvas>
             </td>
         </tr>
 
         <tr>
             <td style="">
-                <canvas id="leftPanel" class = "left" width="100" height="600"></canvas>
+                <canvas id="leftPanel" class="left" width="100" height="600"></canvas>
             </td>
-            <td style="width:4%; text-align: center; position: relative;" id = "BoardTableElement">
-                <canvas id="BoardCanvas" class = "centerHor" width="600" height="600" >
+            <td style="width:4%; text-align: center; position: relative;" id="BoardTableElement">
+                <canvas id="BoardCanvas" class="centerHor" width="600" height="600">
                     Your browser does not support the HTML5 canvas tag.</canvas>
-                </td>
-                <td style="">
-                    <canvas id="rightPanel" class = "right" width="100" height="600"></canvas>
-                </td>
-            </tr>
+            </td>
+            <td style="">
+                <canvas id="rightPanel" class="right" width="100" height="600"></canvas>
+            </td>
+        </tr>
 
-            <tr>
-                <td>
-                    <canvas id="player2KnightCanvas" class = "left" width="100" height="100"></canvas>
-                </td>
-                <td>
-                    <canvas id="player2Canvas" class = "centerHor" width="600" height="100"></canvas>
-                </td>
-                <td>
-                    <canvas id="player2allignmentCanvas" class = "right" width="100" height="100"></canvas>
-                </td>
-            </tr>
-        </table>
-        <!-- <canvas id = "background" style = "width:100%;height:100%;z-index:20;transform:translate(0,0)"></canvas> -->
-    </body>
-    <script>
+        <tr>
+            <td>
+                <canvas id="player2KnightCanvas" class="left" width="100" height="100"></canvas>
+            </td>
+            <td>
+                <canvas id="player2Canvas" class="centerHor" width="600" height="100"></canvas>
+            </td>
+            <td>
+                <canvas id="player2allignmentCanvas" class="right" width="100" height="100"></canvas>
+            </td>
+        </tr>
+    </table>
+    <!-- <canvas id = "background" style = "width:100%;height:100%;z-index:20;transform:translate(0,0)"></canvas> -->
+</body>
+<script>
 
-    function getIndexesOfFieldAtCursor(event, border, boardSize){//FIXME put into board
+    //could limit to mobile by checking /mobi|Android/i.test(navigator.userAgent)
+    document.addEventListener('touchmove', function (event) {
+        event.preventDefault();
+    }, { passive: false });
+
+
+    function getIndexesOfFieldAtCursor(event, border, boardSize) {//FIXME put into board
         var canvas = document.getElementById("BoardCanvas")
         var rect = canvas.getBoundingClientRect()
         var y = event.clientY - rect.top
         var x = event.clientX - rect.left
-        var fieldSizeX = (canvas.clientWidth/boardSize)-border
-        var fieldSizeY = (canvas.clientHeight/boardSize)-border
-        var xf = (x/(fieldSizeX+border))
-        var yf = (y/(fieldSizeX+border))
-        return {x:Math.floor(xf),y:Math.floor(yf)}
+        var fieldSizeX = (canvas.clientWidth / boardSize) - border
+        var fieldSizeY = (canvas.clientHeight / boardSize) - border
+        var xf = (x / (fieldSizeX + border))
+        var yf = (y / (fieldSizeX + border))
+        return { x: Math.floor(xf), y: Math.floor(yf) }
     }
 
-    function tempAlert(msg,duration=1000)//FIXME replace text if div still exists
+    function tempAlert(msg, duration = 1000)//FIXME replace text if div still exists
     {
         var el = document.createElement("div")
         // el.setAttribute("style","position:absolute;top:47%;left:30%;right:30%;font-size:36px;border-radius:5px;border-style:solid;border-width:5px;border-color:"+activePlayer.color2+";color:"+activePlayer.color2+";background-color:"+activePlayer.color)
-        el.setAttribute("style","width: 80%; position:absolute; text-align: center; font-size: "+18*window.FONTSCALING+"; top: 50%; right: 50%; transform: translate(50%,-50%); color:"+activePlayer.color2+";border:2px;background-color:"+activePlayer.color +";border-style:solid;border-color:"+activePlayer.color2)
+        el.setAttribute("style", "width: 80%; position:absolute; text-align: center; font-size: " + 18 * window.FONTSCALING + "; top: 50%; right: 50%; transform: translate(50%,-50%); color:" + activePlayer.color2 + ";border:2px;background-color:" + activePlayer.color + ";border-style:solid;border-color:" + activePlayer.color2)
         //el.setAttribute("style","width:100%;color:white;background-color:"+activePlayer.color)
         el.innerHTML = msg
-        setTimeout(function(){
+        setTimeout(function () {
             el.parentNode.removeChild(el)
-        },duration)
+        }, duration)
         document.getElementById("BoardTableElement").appendChild(el)
     }
 
-    function dialogBox(msg,callback = function(){})//FIXME replace text if div still exists
+    function dialogBox(msg, callback = function () { })//FIXME replace text if div still exists
     {
         dialogBoxActive = true
         var dB = document.createElement("div")
-        dB.setAttribute("id","dialogBox")
-        dB.setAttribute("style","width: 80%; position:absolute; text-align: center; font-size: "+18*window.FONTSCALING+"; top: 50%; right: 50%; transform: translate(50%,-50%); color:"+activePlayer.color2+";border:2px;background-color:"+activePlayer.color+";border-style:solid;border-color:"+activePlayer.color2)
+        dB.setAttribute("id", "dialogBox")
+        dB.setAttribute("style", "width: 80%; position:absolute; text-align: center; font-size: " + 18 * window.FONTSCALING + "; top: 50%; right: 50%; transform: translate(50%,-50%); color:" + activePlayer.color2 + ";border:2px;background-color:" + activePlayer.color + ";border-style:solid;border-color:" + activePlayer.color2)
         dB.innerHTML = msg//+"<br><button style = \"background-color:"+activePlayer.color2+";color:"+activePlayer.color+"\">Ok.</button>"
         document.getElementById("BoardTableElement").appendChild(dB)
-        dB.addEventListener('mousedown',function(event){dB.parentNode.removeChild(dB); dialogBoxActive = false;callback()})
+        dB.addEventListener('mousedown', function (event) { dB.parentNode.removeChild(dB); dialogBoxActive = false; callback() })
     }
 
-    function aiOr2PlayerBox(callback = function(){})//FIXME replace text if div still exists
+    function aiOr2PlayerBox(callback = function () { })//FIXME replace text if div still exists
     {
-        function setAi(bool){
+        function setAi(bool) {
             window.againstAi = bool
             dB.parentNode.removeChild(dB)
             dialogBoxActive = false
             callback()
         }
 
-        function createThemeSelector(dB){
+        function createThemeSelector(dB) {
             options = ""
-            for (var key in colorSchemeDict){
-                options += "<option value=\""+key+"\">"+key+"</option>"
+            for (var key in colorSchemeDict) {
+                options += "<option value=\"" + key + "\">" + key + "</option>"
             }
-            dB.innerHTML +=  "<br>Colors:<select id=\"colorSelection\" oninput=\"window.location.hash = 'c='+this.value; window.location.reload();\">"+options+"</select>"
+            dB.innerHTML += "<br>Colors:<select id=\"colorSelection\" oninput=\"window.location.hash = 'c='+this.value; window.location.reload();\">" + options + "</select>"
         }
 
         dialogBoxActive = true
         var dB = document.createElement("div")
-        dB.setAttribute("id","dialogBox")
+        dB.setAttribute("id", "dialogBox")
         //FIXME probably should have a global dialog box style.
-        dB.setAttribute("style","width: 80%; position:absolute; text-align: center; font-size: 0; top: 50%; right: 50%; transform: translate(50%,-50%); color:"+/*activePlayer.color2*/neutralColor+";border:2px;background-color:"+neutralColor/*activePlayer.color*/+";border-style:solid;border-color:"+activePlayer.color2)
+        dB.setAttribute("style", "width: 80%; position:absolute; text-align: center; font-size: 0; top: 50%; right: 50%; transform: translate(50%,-50%); color:" +/*activePlayer.color2*/neutralColor + ";border:2px;background-color:" + neutralColor/*activePlayer.color*/ + ";border-style:solid;border-color:" + activePlayer.color2)
         //dB.innerHTML = "~~ Ai or not? ~ ~"
-        dB.innerHTML = "<br><button id=\"againstAi\"    style = \"font-size:"+18*window.FONTSCALING+";background-color:"+inactivePlayer.color2+";color:"+inactivePlayer.color +";\">Against Ai</button>"
-        dB.innerHTML += "<br><button id=\"playersOnly\" style = \"font-size:"+18*window.FONTSCALING+";background-color:"+activePlayer.color2  +";color:"+activePlayer.color   +";\">2 Player</button>"
+        dB.innerHTML = "<br><button id=\"againstAi\"    style = \"font-size:" + 18 * window.FONTSCALING + ";background-color:" + inactivePlayer.color2 + ";color:" + inactivePlayer.color + ";\">Against Ai</button>"
+        dB.innerHTML += "<br><button id=\"playersOnly\" style = \"font-size:" + 18 * window.FONTSCALING + ";background-color:" + activePlayer.color2 + ";color:" + activePlayer.color + ";\">2 Player</button>"
         createThemeSelector(dB)
         document.getElementById("BoardTableElement").appendChild(dB)
 
         var pve = document.getElementById("againstAi")
         var pvp = document.getElementById("playersOnly")
         var cols = document.getElementById("colorSelection")
-        pve.onclick = function(){setAi(true)}
-        pvp.onclick = function(){setAi(false)}
+        pve.onclick = function () { setAi(true) }
+        pvp.onclick = function () { setAi(false) }
 
         var style = "width: 80%;"
-        pve.setAttribute("style", pve.getAttribute("style")+style)
-        pvp.setAttribute("style", pvp.getAttribute("style")+style)
-        cols.setAttribute("style", pve.getAttribute("style")+style)
+        pve.setAttribute("style", pve.getAttribute("style") + style)
+        pvp.setAttribute("style", pvp.getAttribute("style") + style)
+        cols.setAttribute("style", pve.getAttribute("style") + style)
 
         document.getElementById("colorSelection").value = window.location.hash.split("=")[1]
 
     }
 
-    function fillInBackground(ctx,backgroundColor){
-        ctx.clearRect(-100,-100,10000, 10000)
+    function fillInBackground(ctx, backgroundColor) {
+        ctx.clearRect(-100, -100, 10000, 10000)
         ctx.beginPath()
         ctx.fillStyle = backgroundColor
-        ctx.fillRect(-100,-100,10000,10000)//FIXME UGLY "HAcK"//get actual size
+        ctx.fillRect(-100, -100, 10000, 10000)//FIXME UGLY "HAcK"//get actual size
     }
 
-    function getContextWithSizesAndCanvas(string){
-        var canvas  = document.getElementById(string)
-        var ctx     =  canvas.getContext("2d")
-        ctx.width   =  canvas.width
-        ctx.height  =  canvas.height
-        return{"ctx":ctx,"canvas":canvas}
+    function getContextWithSizesAndCanvas(string) {
+        var canvas = document.getElementById(string)
+        var ctx = canvas.getContext("2d")
+        ctx.width = canvas.width
+        ctx.height = canvas.height
+        return { "ctx": ctx, "canvas": canvas }
     }
 
 
-    function getClickedCardIndex(canvas){
+    function getClickedCardIndex(canvas) {
         var canvas = document.getElementById("player2Canvas")//!!! FIXME Detect when game has ended or one player is unable to play, so he has to pass.
         var rect = canvas.getBoundingClientRect()
         var x = event.clientX - rect.left
-        var fieldSizeX = (canvas.clientWidth/player2.cards.length)
-        return Math.floor(x/(fieldSizeX))
+        var fieldSizeX = (canvas.clientWidth / player2.cards.length)
+        return Math.floor(x / (fieldSizeX))
     }
-    </script>
+</script>
 
-    <script>
+<script>
     //FIXME function onwindowresize adjustElement(ctx, width, height){} and use the proper sizes, as in the link in the mail that I sent to myself (from mcs to gmx mail)
 
-    function setupFieldSizes(){
+    function setupFieldSizes() {
 
         var partitions = 7//In how many parts the display is split (cards will have a height of 1 part)
         var totHeight = window.innerHeight
         var totWidth = window.innerWidth
-        var yUnit = (totHeight)/partitions
-        var xUnit = (totWidth-20)/partitions
+        var yUnit = (totHeight) / partitions
+        var xUnit = (totWidth - 20) / partitions
         var c = undefined
-        bigSquareSize =  Math.min((partitions-2)*xUnit, (partitions-2)*yUnit)//6*xUnit or 6*yUnit
+        bigSquareSize = Math.min((partitions - 2) * xUnit, (partitions - 2) * yUnit)//6*xUnit or 6*yUnit
         //setting all the canvas sizes.
         c = document.getElementById("BoardCanvas")
         c.width = bigSquareSize
@@ -225,7 +232,7 @@ FIXME load scripts async, but I'll have to wait for all, before the main is able
         c.height = yUnit
 
         c = document.getElementById("player2allignmentCanvas")
-        c.width =  xUnit
+        c.width = xUnit
         c.height = yUnit
 
         c = document.getElementById("player1KnightCanvas")
@@ -238,13 +245,13 @@ FIXME load scripts async, but I'll have to wait for all, before the main is able
 
         c = document.getElementById("leftPanel")
         c.width = xUnit
-        c.height = (partitions-2)*yUnit
+        c.height = (partitions - 2) * yUnit
 
         c = document.getElementById("rightPanel")
         c.width = xUnit
-        c.height = (partitions-2)*yUnit
+        c.height = (partitions - 2) * yUnit
 
-        window.LINEWIDTH = (xUnit+yUnit)/150
+        window.LINEWIDTH = (xUnit + yUnit) / 150
 
     }
 
@@ -252,30 +259,30 @@ FIXME load scripts async, but I'll have to wait for all, before the main is able
 
     window.TURNTIME = 900//Milliseconds of pause between player and ai
 
-    var player1Field      = getContextWithSizesAndCanvas("player1Canvas").canvas//awful
-    var player1FieldCtx   = getContextWithSizesAndCanvas("player1Canvas").ctx
-    var player2Field      = getContextWithSizesAndCanvas("player2Canvas").canvas
-    var player2FieldCtx   = getContextWithSizesAndCanvas("player2Canvas").ctx
-    var player1Knights    = getContextWithSizesAndCanvas("player1KnightCanvas").canvas
+    var player1Field = getContextWithSizesAndCanvas("player1Canvas").canvas//awful
+    var player1FieldCtx = getContextWithSizesAndCanvas("player1Canvas").ctx
+    var player2Field = getContextWithSizesAndCanvas("player2Canvas").canvas
+    var player2FieldCtx = getContextWithSizesAndCanvas("player2Canvas").ctx
+    var player1Knights = getContextWithSizesAndCanvas("player1KnightCanvas").canvas
     var player1KnightsCtx = getContextWithSizesAndCanvas("player1KnightCanvas").ctx
-    var player2Knights    = getContextWithSizesAndCanvas("player2KnightCanvas").canvas
+    var player2Knights = getContextWithSizesAndCanvas("player2KnightCanvas").canvas
     var player2KnightsCtx = getContextWithSizesAndCanvas("player2KnightCanvas").ctx
 
-    var player1PointsCtx  = getContextWithSizesAndCanvas("player1allignmentCanvas").ctx
-    var player2PointsCtx  = getContextWithSizesAndCanvas("player2allignmentCanvas").ctx
+    var player1PointsCtx = getContextWithSizesAndCanvas("player1allignmentCanvas").ctx
+    var player2PointsCtx = getContextWithSizesAndCanvas("player2allignmentCanvas").ctx
 
-    var leftPanel         = getContextWithSizesAndCanvas("leftPanel").canvas
-    var leftPanelCtx      = getContextWithSizesAndCanvas("leftPanel").ctx
-    var rightPanel        = getContextWithSizesAndCanvas("rightPanel").canvas
-    var rightPanelCtx     = getContextWithSizesAndCanvas("rightPanel").ctx
+    var leftPanel = getContextWithSizesAndCanvas("leftPanel").canvas
+    var leftPanelCtx = getContextWithSizesAndCanvas("leftPanel").ctx
+    var rightPanel = getContextWithSizesAndCanvas("rightPanel").canvas
+    var rightPanelCtx = getContextWithSizesAndCanvas("rightPanel").ctx
 
-    var c   = getContextWithSizesAndCanvas("BoardCanvas").canvas
-    var ctx  = getContextWithSizesAndCanvas("BoardCanvas").ctx
+    var c = getContextWithSizesAndCanvas("BoardCanvas").canvas
+    var ctx = getContextWithSizesAndCanvas("BoardCanvas").ctx
 
     //createBackground()
     window.FONTSCALING = 2//Math.min( 1920000 / (window.outerWidth * window.innerWidth), 2)
 
-    function setup () {}
+    function setup() { }
 
     //FIXME should have a GAME object, that just basically has a reference to everything. Makes it also much easier to store and reload stuff.
     var boardSize = 9//9 or 11 works good.
@@ -286,36 +293,36 @@ FIXME load scripts async, but I'll have to wait for all, before the main is able
     //function locationHashChanged() {
     // FIXME use something like this to update the colors of the game: if (location.hash === "#irgendeinCoolesFeature") {}
     var clrShmeSelected = window.location.hash.split("c=")
-    clrShmeSelected = clrShmeSelected[clrShmeSelected.length-1]
+    clrShmeSelected = clrShmeSelected[clrShmeSelected.length - 1]
     var clrShme = colorSchemeDict[clrShmeSelected.toLowerCase()]
-    if(clrShme === undefined){window.location.hash = "c=default"; clrShme = colorSchemeDict["default"];}
+    if (clrShme === undefined) { window.location.hash = "c=default"; clrShme = colorSchemeDict["default"]; }
 
 
     //set everything to the background Color
-    var style=document.createElement('style');
-    style.type='text/css';
-    if(style.styleSheet){
-        style.styleSheet.cssText='*{background-color: '+clrShme.backgroundColor+'}';
-    }else{
-        style.appendChild(document.createTextNode('*{background-color: '+clrShme.backgroundColor+'}'));
+    var style = document.createElement('style');
+    style.type = 'text/css';
+    if (style.styleSheet) {
+        style.styleSheet.cssText = '*{background-color: ' + clrShme.backgroundColor + '}';
+    } else {
+        style.appendChild(document.createTextNode('*{background-color: ' + clrShme.backgroundColor + '}'));
     }
     document.getElementsByTagName('head')[0].appendChild(style);
 
-    var player1 = new Player(clrShme.player1color1,clrShme.player1color2 , "Player1", window.againstAi, player1FieldCtx, player1KnightsCtx, player1PointsCtx)
-    var player2 = new Player(clrShme.player2color1,clrShme.player2color2 , "Player2", false, player2FieldCtx, player2KnightsCtx, player2PointsCtx)
+    var player1 = new Player(clrShme.player1color1, clrShme.player1color2, "Player1", window.againstAi, player1FieldCtx, player1KnightsCtx, player1PointsCtx)
+    var player2 = new Player(clrShme.player2color1, clrShme.player2color2, "Player2", false, player2FieldCtx, player2KnightsCtx, player2PointsCtx)
     var neutralColor = clrShme.neutralColor
     var backgroundColor = clrShme.backgroundColor
     var fieldColor = clrShme.fieldColor
     var fieldBorderColor = clrShme.fieldBorderColor
     var crownColor = clrShme.crownColor
-    document.body.style.backgroundImage = "url('"+clrShme.backgroundImage+"')"
+    document.body.style.backgroundImage = "url('" + clrShme.backgroundImage + "')"
     //Players are not allowed to have the same name since I count according to name and not object
-    if(player1.name == player2.name){
-        player1.name = player1.name+"1"
-        player2.name = player1.name+"2"
+    if (player1.name == player2.name) {
+        player1.name = player1.name + "1"
+        player2.name = player1.name + "2"
     }
 
-    var board = new Board(boardSize, crownColor,fieldColor,fieldBorderColor,backgroundColor)
+    var board = new Board(boardSize, crownColor, fieldColor, fieldBorderColor, backgroundColor)
 
     var deck = new Deck(leftPanelCtx)
     deck.shuffle()
@@ -328,7 +335,7 @@ FIXME load scripts async, but I'll have to wait for all, before the main is able
     var inactivePlayer = player1
 
     //Now I only have to set the activePlayer to the correct player.
-    board.setupDisplay(ctx,rightPanelCtx,player1,player2,deck,activePlayer)
+    board.setupDisplay(ctx, rightPanelCtx, player1, player2, deck, activePlayer)
     board.display(activePlayer)
 
     aiOr2PlayerBox()
@@ -349,7 +356,7 @@ FIXME load scripts async, but I'll have to wait for all, before the main is able
         localStorage.setItem("savegame", JSON.stringify(save_object))
 
     }
-    
+
 
     function load() {
         [lboard, ldeck, lplayer1, lplayer2, useKnight, turn, unableToPlaySince, gameEnded] = JSON.parse(localStorage.getItem("savegame"))
@@ -365,39 +372,39 @@ FIXME load scripts async, but I'll have to wait for all, before the main is able
         player2.cards = player2.cards.map(cardmaker);
         board.player1 = player1
         board.player2 = player2
-        activePlayer = turn%2 == 0 ? player2 : player1;
-        inactivePlayer = turn%2 == 0 ? player1 : player2;
+        activePlayer = turn % 2 == 0 ? player2 : player1;
+        inactivePlayer = turn % 2 == 0 ? player1 : player2;
         board.crownPosition = lboard.crownPosition
         board.display(activePlayer)
         //board.display(player2)
     }
 
-    function changeActivePlayer(){//FIMXE Need ai vs ai mode for dna training, Human vs Human and Ai vs Hooman
+    function changeActivePlayer() {//FIMXE Need ai vs ai mode for dna training, Human vs Human and Ai vs Hooman
         //Maybe do a function for all o them.
         // Or even a "Class"(-function).
-        if(gameEnded){return}
+        if (gameEnded) { return }
         turn++
 
         //var ai1 = new AI(player2,player1,3)
         player1.isAi = window.againstAi//dynamically update.
 
-        if(window.againstAi){
-            /*var */ai2 = new AI(player1,player2,3)
+        if (window.againstAi) {
+            /*var */ai2 = new AI(player1, player2, 3)
         }
 
         //if (! inactivePlayer.checkPossibleMoves(board, deck).state != "noPossibleTurnLeft") {
-            activePlayer = turn%2 == 0? player2 : player1
-            inactivePlayer = turn%2 == 0? player1 : player2
+        activePlayer = turn % 2 == 0 ? player2 : player1
+        inactivePlayer = turn % 2 == 0 ? player1 : player2
         //}
 
         let inactivePlayerMayPlay = inactivePlayer.checkPossibleMoves(board, deck).state != "noPossibleTurnLeft";
 
-        if(board.remainingStones <= 0){//clearInterval(interval)
-            console.log("The game has ended! by lack of stones to play\nin turn:", Math.floor(turn/2))
+        if (board.remainingStones <= 0) {//clearInterval(interval)
+            console.log("The game has ended! by lack of stones to play\nin turn:", Math.floor(turn / 2))
             finishGame("(There aren't any stones left)")
         }
 
-        var obj = activePlayer.checkPossibleMoves(board,deck)//FIXME DETAIL: find good name for this object, update Player.js to use the better name.
+        var obj = activePlayer.checkPossibleMoves(board, deck)//FIXME DETAIL: find good name for this object, update Player.js to use the better name.
         //  Possible states
         //    "noPossibleTurnLeft"
         //    "hasToPlayKnight"
@@ -406,23 +413,23 @@ FIXME load scripts async, but I'll have to wait for all, before the main is able
         //    "isAbleToPlayNormally"
         var state = obj.state
         var indices = obj.playableIndices
-        if(state == "noPossibleTurnLeft"){
+        if (state == "noPossibleTurnLeft") {
             //player has full hand cards and is unable to play any of them even with a knight.
             //if(board.gameHasEnded(activePlayer.copy(),inactivePlayer.copy(),deck.copy())){
-            tempAlert(activePlayer.name+" is not able to do any move!", 1000)
-            if(!inactivePlayerMayPlay){
+            tempAlert(activePlayer.name + " is not able to do any move!", 1000)
+            if (!inactivePlayerMayPlay) {
                 //both players are unable to play any cards
                 //thus ends the game.
                 board.display(activePlayer)
                 console.log("Game should have ended");
-                if(unableToPlaySince > 2){
+                if (unableToPlaySince > 2) {
                     board.display(activePlayer)
                     finishGame("There are no possible turns left.")
                 }
                 unableToPlaySince++
                 //changeActivePlayer()
             }
-            else{
+            else {
                 board.display(activePlayer)
                 console.log("computer plays again because there are no player turns left")
                 //setTimeout(function(){
@@ -434,16 +441,16 @@ FIXME load scripts async, but I'll have to wait for all, before the main is able
             changeActivePlayer();
             return;
         }
-        if(state == "hasToPlayKnight"){//FIXME Give visual clues to these states by defocusing/overlaying/transparancy of cards.
+        if (state == "hasToPlayKnight") {//FIXME Give visual clues to these states by defocusing/overlaying/transparancy of cards.
             isAllowedToPlayCard = false
         }
-        if(state == "hasToTakeCard" && !activePlayer.isAi){
+        if (state == "hasToTakeCard" && !activePlayer.isAi) {
             //dialogBox(activePlayer.name+" has to draw a card.")//" Card has been drawn.")
             //activePlayer.addCard(deck)
             //isAllowedToPlayCard = false
             //changeActivePlayer()
         }
-        if(state == "hasToTakeCardOrPlayKnight"){
+        if (state == "hasToTakeCardOrPlayKnight") {
             isAllowedToPlayCard = false
         }
 
@@ -455,36 +462,36 @@ FIXME load scripts async, but I'll have to wait for all, before the main is able
 
         //TODO FIXME ONLY TEST CODE (As quite the lot in here.)
         board.display(activePlayer)
-        if(activePlayer.isAi === true){
+        if (activePlayer.isAi === true) {
             ai2.playBestNextTurn(board, deck)
-            setTimeout(function(){
+            setTimeout(function () {
                 board.display(activePlayer)
                 changeActivePlayer()
             }, window.TURNTIME)
         }
     }
 
-    function finishGame(additionalInfo = ""){
+    function finishGame(additionalInfo = "") {
 
         var string = ""
 
         var p1Score = player1.countScore(board, deck)
         var p2Score = player2.countScore(board, deck)
 
-        if(p1Score > p2Score){
+        if (p1Score > p2Score) {
             activePlayer = player1//so board and message colours match the winner colours.
-        }else{
+        } else {
             activePlayer = player2
         }
         name = activePlayer.name
         //if against AI say if computer or you won.
-        if(activePlayer.isAi){
+        if (activePlayer.isAi) {
             name = "The computer "
         } else if (window.againstAi) {
-            name  = "You "
+            name = "You "
         }
 
-        string += "<br>"+name+" won!<div style = \"font-size: "+12*window.FONTSCALING+"pt;\"><br>"+additionalInfo+"</div><br>"
+        string += "<br>" + name + " won!<div style = \"font-size: " + 12 * window.FONTSCALING + "pt;\"><br>" + additionalInfo + "</div><br>"
 
 
         //console.log("Game has ended")
@@ -507,23 +514,23 @@ FIXME load scripts async, but I'll have to wait for all, before the main is able
 
     var currKonamiIndex = 0
     var konamiCode = ["ArrowUp", "ArrowUp", "ArrowDown", "ArrowDown", "ArrowLeft", "ArrowRight", "ArrowLeft", "ArrowRight", "KeyB", "KeyA"]
-    document.addEventListener("keydown", function(key){
+    document.addEventListener("keydown", function (key) {
         //console.log(currKonamiIndex);
-        if(konamiCode[currKonamiIndex] == key.code){
+        if (konamiCode[currKonamiIndex] == key.code) {
             currKonamiIndex++
             console.log(currKonamiIndex)
-            if(currKonamiIndex == konamiCode.length){
+            if (currKonamiIndex == konamiCode.length) {
                 tempAlert("#HACKS", 200)
                 //activePlayer.additionalPoints += 50+Math.round(30*Math.random())
                 activePlayer.knightCount = 5
                 //Give player 10 cards or something?
                 window.TURNTIME = 200
-                while(activePlayer.addCard(deck) === true){}
+                while (activePlayer.addCard(deck) === true) { }
                 console.log("EVIL CHEATER!");
                 board.display(activePlayer)
             }
         }
-        else{currKonamiIndex = 0}
+        else { currKonamiIndex = 0 }
     })
 
 
@@ -550,47 +557,47 @@ FIXME load scripts async, but I'll have to wait for all, before the main is able
     //    "hasToTakeCard"
     //    "hasToTakeCardOrPlayKnight"
     //    "isAbleToPlayNormally"
-    document.getElementById("player1Canvas").addEventListener('mousedown',function(event){ // MY EYEEY! AHHH!
+    document.getElementById("player1Canvas").addEventListener('mousedown', function (event) { // MY EYEEY! AHHH!
         //TODO find a better place for this listener.
         console.log("player1 canvas click")
-        if(activePlayer.isAi){return}
-        if(activePlayer != player1){return}
-        if(activePlayer.checkPossibleMoves(board, deck) == "noPossibleTurnLeft"){return}
-        if(dialogBoxActive){return}
+        if (activePlayer.isAi) { return }
+        if (activePlayer != player1) { return }
+        if (activePlayer.checkPossibleMoves(board, deck) == "noPossibleTurnLeft") { return }
+        if (dialogBoxActive) { return }
         var canvas = document.getElementById("player1Canvas")//FIXME Detect when game has ended or one player is unable to play, so he has to pass.
         var index = getClickedCardIndex(canvas)
-        var msg = player1.playCard(index,board,deck,useKnight)
-        if(msg != true){tempAlert(msg,2000); return}
+        var msg = player1.playCard(index, board, deck, useKnight)
+        if (msg != true) { tempAlert(msg, 2000); return }
         useKnight = false
         changeActivePlayer()
     })
 
-    document.getElementById("player2Canvas").addEventListener('mousedown',function(event){
+    document.getElementById("player2Canvas").addEventListener('mousedown', function (event) {
         //TODO find a better place for this listener.
         console.log("player2 canvas click")
-        if(activePlayer.isAi){return}
-        if(activePlayer.name != player2.name){return}
-        if(activePlayer.checkPossibleMoves(board, deck) == "noPossibleTurnLeft"){return}
-        if(dialogBoxActive){return}
+        if (activePlayer.isAi) { return }
+        if (activePlayer.name != player2.name) { return }
+        if (activePlayer.checkPossibleMoves(board, deck) == "noPossibleTurnLeft") { return }
+        if (dialogBoxActive) { return }
         var canvas = document.getElementById("player2Canvas")//!!! FIXME Detect when game has ended or one player is unable to play, so he has to pass.
         var index = getClickedCardIndex(canvas)
-        var msg = player2.playCard(index,board,deck,useKnight)
-        if(msg != true){tempAlert(msg,2000); return}
+        var msg = player2.playCard(index, board, deck, useKnight)
+        if (msg != true) { tempAlert(msg, 2000); return }
         useKnight = false
         changeActivePlayer()
     })
 
-    document.getElementById("player1KnightCanvas").addEventListener('mousedown',function(event){
+    document.getElementById("player1KnightCanvas").addEventListener('mousedown', function (event) {
         //TODO find a better place for this listener.
-        if(activePlayer.isAi){return}
-        if(activePlayer != player1){return}
-        if(dialogBoxActive){return}
-        if(player1.knightCount< 1){
+        if (activePlayer.isAi) { return }
+        if (activePlayer != player1) { return }
+        if (dialogBoxActive) { return }
+        if (player1.knightCount < 1) {
             tempAlert("No knights left!")
             return
         }
 
-        if(useKnight == true){
+        if (useKnight == true) {
             useKnight = false
             tempAlert("Use of knight deselected")
             return
@@ -599,16 +606,16 @@ FIXME load scripts async, but I'll have to wait for all, before the main is able
         useKnight = true
     })
 
-    document.getElementById("player2KnightCanvas").addEventListener('mousedown',function(event){
+    document.getElementById("player2KnightCanvas").addEventListener('mousedown', function (event) {
         //TODO find a better place for this listener.
-        if(activePlayer.isAi){return}
-        if(activePlayer != player2){return}
-        if(dialogBoxActive){return}
-        if(player2.knightCount< 1){
+        if (activePlayer.isAi) { return }
+        if (activePlayer != player2) { return }
+        if (dialogBoxActive) { return }
+        if (player2.knightCount < 1) {
             tempAlert("No knights left!")
             return
         }
-        if(useKnight == true){
+        if (useKnight == true) {
             useKnight = false
             tempAlert("Use of knight deselected")
             return
@@ -618,36 +625,35 @@ FIXME load scripts async, but I'll have to wait for all, before the main is able
 
     })
 
-    document.getElementById("leftPanel").addEventListener('mousedown',function(){
-        if(activePlayer.isAi){return}
-        if(activePlayer != player1){return}
+    document.getElementById("leftPanel").addEventListener('mousedown', function () {
+        if (activePlayer.isAi) { return }
+        if (activePlayer != player1) { return }
         //if(dialogBoxActive){return}
         var msg = player1.addCard(deck)
-        if(msg === true)
-        {
-            setTimeout(function(){
+        if (msg === true) {
+            setTimeout(function () {
                 changeActivePlayer()
-            } ,50)
-        }else{tempAlert(msg,2000)}
+            }, 50)
+        } else { tempAlert(msg, 2000) }
     })
 
-    document.getElementById("leftPanel").addEventListener('mousedown',function(){
-        if(activePlayer.isAi){return}
-        if(activePlayer != player2){return}
-        if(dialogBoxActive){return}
+    document.getElementById("leftPanel").addEventListener('mousedown', function () {
+        if (activePlayer.isAi) { return }
+        if (activePlayer != player2) { return }
+        if (dialogBoxActive) { return }
         var msg = player2.addCard(deck)
-        if(msg === true)
-        {
-            setTimeout(function(){
+        if (msg === true) {
+            setTimeout(function () {
                 changeActivePlayer()//else both player's events might get triggered with only one click.
-            },50)
-        }else{tempAlert(msg,2000)}
+            }, 50)
+        } else { tempAlert(msg, 2000) }
     })
 
     //FIXME TODO still broken. somewhere in some display functions values not updated correctly.
-    window.onresize = () => {setupFieldSizes(); board.display(activePlayer)}
+    window.onresize = () => { setupFieldSizes(); board.display(activePlayer) }
 
-    </script>
+</script>
 
 </body>
+
 </html>
